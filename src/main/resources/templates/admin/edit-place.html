@@ -1,0 +1,75 @@
+<th:block th:fragment>
+  <div class="container">
+    <h2 class="mb-4 mt-4 text-center">Edit Place!</h2>
+    <form th:action="@{/admin/edit-place/{id} (id=*{id})}" method="POST" th:object="${bindingModel}"
+          enctype="multipart/form-data">
+      <div class="mt-3 w-50 mx-auto">
+        <h3>Name</h3>
+        <input type="text" class="form-control" name="name" th:value="*{name}"
+               th:classappend="${#fields.hasErrors('name')} ? 'is-invalid'"
+               placeholder="Enter Place Name..." required>
+        <th:block th:if="${#fields.hasErrors('name')}">
+          <small class="text-danger" th:errors="*{name}"></small>
+        </th:block>
+      </div>
+      <div class="mt-3 w-50 mx-auto">
+        <h3>
+          Current Header Image
+        </h3>
+        <div style="width: 140px;">
+          <img class="img-thumbnail" th:src="*{headerImageUrl}" alt="headerImage">
+        </div>
+        <input type="hidden" th:value="*{headerImageUrl}" name="headerImageUrl"/>
+        <h3 class="mt-3">
+          Change Header Image
+        </h3>
+        <div class="custom-file">
+          <input type="file" class="custom-file-input" id="validatedCustomFile" name="headerImage"
+                 th:classappend="${#fields.hasErrors('headerImage')} ? 'is-invalid'">
+          <label class="custom-file-label" for="validatedCustomFile">Choose file...</label>
+          <th:block th:if="${#fields.hasErrors('headerImage')}">
+            <small class="text-danger" th:errors="*{headerImage}"></small>
+          </th:block>
+        </div>
+      </div>
+      <div class="mt-3 w-50 mx-auto">
+        <th:block th:include="~{fragments/select-province}"></th:block>
+        <th:block th:if="${#fields.hasErrors('province')}">
+          <small class="text-danger" th:errors="*{province}"></small>
+        </th:block>
+      </div>
+      <div class="mt-3 w-50 mx-auto">
+        <h3>Short Info</h3>
+        <textarea name="info" class="form-control" cols="41" rows="5" th:text="*{info}"
+                  th:classappend="${#fields.hasErrors('info')} ? 'is-invalid'" required
+                  placeholder="Write Short Intoduction for the Place..."></textarea>
+        <th:block th:if="${#fields.hasErrors('info')}">
+          <small class="text-danger" th:errors="*{info}"></small>
+        </th:block>
+      </div>
+      <div class="mt-3 w-50 mx-auto">
+        <h3>Hotels Script</h3>
+        <textarea name="placeHotels" class="form-control" th:text="*{placeHotels}"
+                  placeholder="Enter Place Hotels Script..."></textarea>
+      </div>
+      <div class="mt-3 w-50 mx-auto">
+        <h3>Hotels on Map iFrame</h3>
+        <textarea name="placeOnMap" class="form-control" th:text="*{placeOnMap}"
+                  placeholder="Enter Place Hotels on Map iFrame..."></textarea>
+      </div>
+      <div class="mt-3">
+        <h3 class="text-center">
+          Edit the article for the place
+        </h3>
+        <textarea id="summernote" name="article" th:text="*{article}" required
+                  th:classappend="${#fields.hasErrors('article')} ? 'is-invalid'" ></textarea>
+        <th:block th:if="${#fields.hasErrors('article')}">
+          <small class="text-danger" th:errors="*{article}"></small>
+        </th:block>
+      </div>
+      <div class="m-5 text-center">
+        <button type="submit" class="button">Edit</button>
+      </div>
+    </form>
+  </div>
+</th:block>

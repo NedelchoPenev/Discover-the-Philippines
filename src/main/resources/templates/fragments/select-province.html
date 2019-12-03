@@ -1,0 +1,88 @@
+<th:block th:fragment>
+  <h3>Select Province</h3>
+  <select class="form-control" id="choose-province" name="province" th:classappend="${#fields.hasErrors('province')} ? 'is-invalid'">
+    <option selected="" disabled="">--- Select Province ---</option>
+    <option value="Abra" th:selected="*{province == 'Abra'}">Abra</option>
+    <option value="Agusan del Norte" th:selected="*{province == 'Agusan del Norte'}">Agusan del Norte</option>
+    <option value="Agusan del Sur" th:selected="*{province == 'Agusan del Sur'}">Agusan del Sur</option>
+    <option value="Aklan" th:selected="*{province == 'Aklan'}">Aklan</option>
+    <option value="Albay" th:selected="*{province == 'Albay'}">Albay</option>
+    <option value="Antique" th:selected="*{province == 'Antique'}">Antique</option>
+    <option value="Apayao" th:selected="*{province == 'Apayao'}">Apayao</option>
+    <option value="Aurora" th:selected="*{province == 'Aurora'}">Aurora</option>
+    <option value="Basilan" th:selected="*{province == 'Basilan'}">Basilan</option>
+    <option value="Bataan" th:selected="*{province == 'Bataan'}">Bataan</option>
+    <option value="Batanes" th:selected="*{province == 'Batanes'}">Batanes</option>
+    <option value="Batangas" th:selected="*{province == 'Batangas'}">Batangas</option>
+    <option value="Benguet" th:selected="*{province == 'Benguet'}">Benguet</option>
+    <option value="Biliran" th:selected="*{province == 'Biliran'}">Biliran</option>
+    <option value="Bohol" th:selected="*{province == 'Bohol'}">Bohol</option>
+    <option value="Bukidnon" th:selected="*{province == 'Bukidnon'}">Bukidnon</option>
+    <option value="Bulacan" th:selected="*{province == 'Bulacan'}">Bulacan</option>
+    <option value="Cagayan" th:selected="*{province == 'Cagayan'}">Cagayan</option>
+    <option value="Camarines Norte" th:selected="*{province == 'Camarines Norte'}">Camarines Norte</option>
+    <option value="Camarines Sur" th:selected="*{province == 'Camarines Sur'}">Camarines Sur</option>
+    <option value="Camiguin" th:selected="*{province == 'Camiguin'}">Camiguin</option>
+    <option value="Capiz" th:selected="*{province == 'Capiz'}">Capiz</option>
+    <option value="Catanduanes" th:selected="*{province == 'Catanduanes'}">Catanduanes</option>
+    <option value="Cavite" th:selected="*{province == 'Cavite'}">Cavite</option>
+    <option value="Cebu" th:selected="*{province == 'Cebu'}">Cebu</option>
+    <option value="Compostela Valley" th:selected="*{province == 'Compostela Valley'}">Compostela Valley</option>
+    <option value="Cotabato" th:selected="*{province == 'Cotabato'}">Cotabato</option>
+    <option value="Davao del Norte" th:selected="*{province == 'Davao del Norte'}">Davao del Norte</option>
+    <option value="Davao del Sur" th:selected="*{province == 'Davao del Sur'}">Davao del Sur</option>
+    <option value="Davao Occidental" th:selected="*{province == 'Davao Occidental'}">Davao Occidental</option>
+    <option value="Davao Oriental" th:selected="*{province == 'Davao Oriental'}">Davao Oriental</option>
+    <option value="Dinagat Islands" th:selected="*{province == 'Dinagat Islands'}">Dinagat Islands</option>
+    <option value="Eastern Samar" th:selected="*{province == 'Eastern Samar'}">Eastern Samar</option>
+    <option value="Guimaras" th:selected="*{province == 'Guimaras'}">Guimaras</option>
+    <option value="Ifugao" th:selected="*{province == 'Ifugao'}">Ifugao</option>
+    <option value="Ilocos Norte" th:selected="*{province == 'Ilocos Norte'}">Ilocos Norte</option>
+    <option value="Ilocos Sur" th:selected="*{province == 'Ilocos Sur'}">Ilocos Sur</option>
+    <option value="Iloilo" th:selected="*{province == 'Iloilo'}">Iloilo</option>
+    <option value="Isabela" th:selected="*{province == 'Isabela'}">Isabela</option>
+    <option value="Kalinga" th:selected="*{province == 'Kalinga'}">Kalinga</option>
+    <option value="La Union" th:selected="*{province == 'La Union'}">La Union</option>
+    <option value="Laguna" th:selected="*{province == 'Laguna'}">Laguna</option>
+    <option value="Lanao del Norte" th:selected="*{province == 'Lanao del Norte'}">Lanao del Norte</option>
+    <option value="Lanao del Sur" th:selected="*{province == 'Lanao del Sur'}">Lanao del Sur</option>
+    <option value="Leyte" th:selected="*{province == 'Leyte'}">Leyte</option>
+    <option value="Maguindanao" th:selected="*{province == 'Maguindanao'}">Maguindanao</option>
+    <option value="Marinduque" th:selected="*{province == 'Marinduque'}">Marinduque</option>
+    <option value="Masbate" th:selected="*{province == 'Masbate'}">Masbate</option>
+    <option value="Misamis Occidental" th:selected="*{province == 'Misamis Occidental'}">Misamis Occidental</option>
+    <option value="Misamis Oriental" th:selected="*{province == 'Misamis Oriental'}">Misamis Oriental</option>
+    <option value="Mountain Province" th:selected="*{province == 'Mountain Province'}">Mountain Province</option>
+    <option value="Negros Occidental" th:selected="*{province == 'Negros Occidental'}">Negros Occidental</option>
+    <option value="Negros Oriental" th:selected="*{province == 'Negros Oriental'}">Negros Oriental</option>
+    <option value="Northern Samar" th:selected="*{province == 'Northern Samar'}">Northern Samar</option>
+    <option value="Nueva Ecija" th:selected="*{province == 'Nueva Ecija'}">Nueva Ecija</option>
+    <option value="Nueva Vizcaya" th:selected="*{province == 'Nueva Vizcaya'}">Nueva Vizcaya</option>
+    <option value="Occidental Mindoro" th:selected="*{province == 'Occidental Mindoro'}">Occidental Mindoro</option>
+    <option value="Oriental Mindoro" th:selected="*{province == 'Oriental Mindoro'}">Oriental Mindoro</option>
+    <option value="Palawan" th:selected="*{province == 'Palawan'}">Palawan</option>
+    <option value="Pampanga" th:selected="*{province == 'Pampanga'}">Pampanga</option>
+    <option value="Pangasinan" th:selected="*{province == 'Pangasinan'}">Pangasinan</option>
+    <option value="Quezon" th:selected="*{province == 'Quezon'}">Quezon</option>
+    <option value="Quirino" th:selected="*{province == 'Quirino'}">Quirino</option>
+    <option value="Rizal" th:selected="*{province == 'Rizal'}">Rizal</option>
+    <option value="Romblon" th:selected="*{province == 'Romblon'}">Romblon</option>
+    <option value="Samar" th:selected="*{province == 'Samar'}">Samar</option>
+    <option value="Sarangani" th:selected="*{province == 'Sarangani'}">Sarangani</option>
+    <option value="Siquijor" th:selected="*{province == 'Siquijor'}">Siquijor</option>
+    <option value="Sorsogon" th:selected="*{province == 'Sorsogon'}">Sorsogon</option>
+    <option value="South Cotabato" th:selected="*{province == 'South Cotabato'}">South Cotabato</option>
+    <option value="Southern Leyte" th:selected="*{province == 'Southern Leyte'}">Southern Leyte</option>
+    <option value="Sultan Kudarat" th:selected="*{province == 'Sultan Kudarat'}">Sultan Kudarat</option>
+    <option value="Sulu" th:selected="*{province == 'Sulu'}">Sulu</option>
+    <option value="Surigao del Norte" th:selected="*{province == 'Surigao del Norte'}">Surigao del Norte</option>
+    <option value="Surigao del Sur" th:selected="*{province == 'Surigao del Sur'}">Surigao del Sur</option>
+    <option value="Tarlac" th:selected="*{province == 'Tarlac'}">Tarlac</option>
+    <option value="Tawi-Tawi" th:selected="*{province == 'Tawi-Tawi'}">Tawi-Tawi</option>
+    <option value="Zambales" th:selected="*{province == 'Zambales'}">Zambales</option>
+    <option value="Zamboanga del Norte" th:selected="*{province == 'Zamboanga del Norte'}">Zamboanga del Norte</option>
+    <option value="Zamboanga del Sur" th:selected="*{province == 'Zamboanga del Sur'}">Zamboanga del Sur</option>
+    <option value="Zamboanga Sibugay" th:selected="*{province == 'Zamboanga Sibugay'}">Zamboanga Sibugay</option>
+    <option value="Metro Manila" th:selected="*{province == 'Metro Manila'}">Metro Manila</option>
+  </select>
+</th:block>

@@ -1,0 +1,43 @@
+<th:block th:fragment>
+	<div class="main_menu_iner">
+		<div class="align-items-center">
+			<nav class="navbar navbar-expand-lg navbar-light justify-content-between">
+				<a class="navbar-brand" th:href="@{/}"> <img th:src="@{/img/logo2.png}" alt="logo"> </a>
+				<button class="navbar-toggler ml-auto" type="button" data-toggle="collapse"
+					data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+					aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+
+				<div class="collapse navbar-collapse main-menu-item justify-content-center" id="navbarSupportedContent">
+					<ul class="navbar-nav mx-auto">
+						<li class="nav-item">
+							<a class="nav-link" th:href="@{/}">Home</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" th:href="@{/places}">Places</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" th:href="@{/things-to-do}">Things to do</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" th:href="@{/blog}">Blog</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" th:href="@{/gallery}">Gallery</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" th:href="@{/about}">About</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" th:href="@{/contact}">Contact</a>
+						</li>
+					</ul>
+					<th:block sec:authorize="isAnonymous()"
+                              th:include="~{fragments/navbar-guest}"></th:block>
+					<th:block sec:authorize="isAuthenticated()" th:include="~{fragments/navbar-user}"></th:block>
+				</div>
+			</nav>
+		</div>
+	</div>
+</th:block>

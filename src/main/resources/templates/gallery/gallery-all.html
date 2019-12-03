@@ -1,0 +1,23 @@
+<main class="main-content">
+  <div class="container photos">
+    <div class="row my-3 text-center">
+      <div class="col-12">
+        <h3 class="mb-4" th:text="|All &mdash; ${quantity} Photos|"></h3>
+      </div>
+      <button type="button" class="btn btn-outline-black waves-effect filter" data-rel="2">Sea</button>
+    </div>
+    <div class="row">
+      <div class="col-md-4 my-1 px-1" data-aos="fade-up" th:each="image : ${images}">
+        <a th:href="${image.url}" class="d-block photo-item" data-fancybox="gallery"
+           th:data-caption="|Uploaded by <a href='@{/users/profile/}${image.uploaderUsername}'>${image.uploaderUsername}</a>|">
+          <img th:src="${image.url}" class="img-fluid rounded w-100" alt="Image">
+          <div class="photo-text-more">
+                <span class="icon icon-search">
+                  <i class="fas fa-search"></i>
+                </span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</main>

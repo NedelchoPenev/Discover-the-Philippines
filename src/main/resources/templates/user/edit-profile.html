@@ -1,0 +1,184 @@
+<div class="container">
+  <div class="row flex-lg-nowrap">
+    <div class="col">
+      <div class="row">
+        <div class="col my-3">
+          <div class="card">
+            <div class="card-body">
+              <div class="e-profile">
+                <form class="form" th:action="@{/users/edit-profile}" th:method="patch" th:object="${bindingModel}"
+                      enctype="multipart/form-data">
+                  <div class="row">
+                    <div class="col-12 col-sm-auto mb-3">
+                      <div class="mx-auto" style="width: 140px;">
+                        <img th:src="*{profilePictureUrl}" alt="profile picture">
+                      </div>
+                    </div>
+                    <div class="col d-flex flex-column flex-sm-row justify-content-between mb-3">
+                      <div class="text-center text-sm-left mb-2 mb-sm-0">
+                        <a th:href="@{/users/profile/{username} (username=*{username})}"><h4
+                                class="pt-sm-2 pb-1 mb-0 text-nowrap" th:text="*{username}"></h4></a>
+                        <p class="mb-0" th:text="*{email}"></p>
+                        <small>Last seen
+                          <time class="timeago" th:datetime="*{lastDateLogin}"></time>
+                        </small>
+                        <div class="mt-2">
+                          <label class="custom-file">
+                            <input class="custom-file-input" type="file" id="file" name="profilePicture"/>
+                            <input type="hidden" th:value="*{profilePictureUrl}" name="profilePictureUrl"/>
+                            <span class="custom-file-control"><i
+                                    class="fa fa-fw fa-camera"></i> Change Profile Picture</span>
+                          </label>
+                        </div>
+                      </div>
+                      <div class="text-center text-sm-right">
+                        <th:block th:each="authority: *{authorities}">
+                        <span class="badge badge-info"
+                              th:text="${#strings.substringAfter(authority.getAuthority(), 'ROLE_')}"></span>
+                        </th:block>
+                        <div class="text-muted"><small
+                                th:text="'Joined ' + ${#temporals.format(bindingModel.registrationDate, 'dd-MM-yyyy')}"></small>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="tab-content pt-3">
+                    <div class="tab-pane active">
+                      <div class="row">
+                        <div class="col">
+                          <div class="row">
+                            <div class="col">
+                              <div class="form-group">
+                                <label>Full Name</label>
+                                <input class="form-control" type="text" name="fullName" th:value="*{fullName}">
+                              </div>
+                            </div>
+                            <div class="col">
+                              <div class="form-group">
+                                <label>Username</label>
+                                <input class="form-control" type="text"
+                                       th:classappend="${#fields.hasErrors('username')} ? 'is-invalid'"
+                                       name="username" th:value="*{username}" readonly>
+                                <th:block th:if="${#fields.hasErrors('username')}">
+                                  <small class="text-danger sign-in-error" th:errors="*{username}"></small>
+                                </th:block>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col">
+                              <div class="form-group">
+                                <label>Email</label>
+                                <input class="form-control" type="text"
+                                       th:classappend="${#fields.hasErrors('email')} ? 'is-invalid'"
+                                       name="email" th:value="*{email}">
+                                <th:block th:if="${#fields.hasErrors('email')}">
+                                  <small class="text-danger sign-in-error" th:errors="*{email}"></small>
+                                </th:block>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col mb-3">
+                              <div class="form-group">
+                                <label>About Me</label>
+                                <textarea class="form-control" rows="5" name="aboutMe" th:text="*{aboutMe}"
+                                          placeholder="More Information About Me"></textarea>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-12 col-sm-6 mb-3">
+                          <p><b>Please, enter your password if you want to save the changes!</b></p>
+                          <div class="row my-2">
+                            <div class="col">
+                              <div class="form-group">
+                                <label>Current Password</label>
+                                <input class="form-control" name="currentPassword" type="password"
+                                       th:classappend="${#fields.hasErrors('currentPassword')} ? 'is-invalid'">
+                                <th:block th:if="${#fields.hasErrors('currentPassword')}">
+                                  <small class="text-danger" th:errors="*{currentPassword}"></small>
+                                </th:block>
+                              </div>
+                            </div>
+                          </div>
+                          <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#demo">
+                            <b>Change Password</b>
+                          </button>
+                          <div class="my-2 collapse" id="demo">
+                            <div class="row">
+                              <div class="col">
+                                <div class="form-group">
+                                  <label>New Password</label>
+                                  <input class="form-control" name="newPassword" type="password"
+                                         th:classappend="${#fields.hasErrors('newPassword')} ? 'is-invalid'">
+                                  <th:block th:if="${#fields.hasErrors('newPassword')}">
+                                    <small class="text-danger sign-in-error" th:errors="*{newPassword}"></small>
+                                  </th:block>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="row">
+                              <div class="col">
+                                <div class="form-group">
+                                  <label>Confirm <span class="d-none d-xl-inline">Password</span></label>
+                                  <input class="form-control" name="confirmPassword" type="password"
+                                         th:classappend="${#fields.hasErrors('newPassword')} ? 'is-invalid'">
+                                </div>
+                                <th:block th:if="${#fields.hasErrors('newPassword')}">
+                                  <small class="text-danger sign-in-error" th:errors="*{confirmPassword}"></small>
+                                </th:block>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-12 col-sm-5 offset-sm-1 mb-3">
+                          <div class="mb-2"><b>Keeping in Touch</b></div>
+                          <div class="row">
+                            <div class="col">
+                              <label>Email Notifications</label>
+                              <div class="custom-controls-stacked px-2">
+                                <div class="custom-control custom-checkbox">
+                                  <input type="checkbox" class="custom-control-input" id="notifications-blog">
+                                  <label class="custom-control-label" for="notifications-blog">Blog posts</label>
+                                </div>
+                                <div class="custom-control custom-checkbox">
+                                  <input type="checkbox" class="custom-control-input" id="notifications-news">
+                                  <label class="custom-control-label" for="notifications-news">Newsletter</label>
+                                </div>
+                                <div class="custom-control custom-checkbox">
+                                  <input type="checkbox" class="custom-control-input" id="notifications-offers">
+                                  <label class="custom-control-label" for="notifications-offers">Personal Offers</label>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col d-flex justify-content-end">
+                          <button class="btn btn-primary" type="submit">Save Changes</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-md-3 my-3">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Support</h5>
+              <p class="card-text">Have a question? Don't hesitate to contact us.</p>
+              <a th:href="@{/contact}" class="btn btn-primary">Contact Us</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

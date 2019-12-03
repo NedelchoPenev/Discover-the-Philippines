@@ -1,0 +1,49 @@
+<th:block th:fragment>
+  <div class="modal fade" id="loginModal" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content wrap-login100">
+        <form class="login100-form" th:action="@{/login}" method="post">
+                        <span class="login100-form-title p-b-26">
+                            Welcome
+                        </span>
+          <th:block th:if="${param.error}">
+            <div class="text-center text-danger login-error"
+                 th:text="${session.SPRING_SECURITY_LAST_EXCEPTION.message}">
+              <!--Bad Credentials-->
+            </div>
+          </th:block>
+          <div class="wrap-input100 validate-input" data-validate="Enter Username">
+            <input class="input100" type="text" name="username" autocomplete="username" required>
+            <span class="focus-input100" data-placeholder="Username"></span>
+          </div>
+
+          <div class="wrap-input100 validate-input" data-validate="Enter password">
+                            <span class="btn-show-pass">
+                                <i class="fas fa-eye"></i>
+                            </span>
+            <input class="input100" type="password" name="password" autocomplete="current-password" required>
+            <span class="focus-input100" data-placeholder="Password"></span>
+          </div>
+
+          <div class="container-login100-form-btn">
+            <div class="wrap-login100-form-btn">
+              <div class="login100-form-bgbtn"></div>
+              <button type="submit" class="login100-form-btn">
+                Login
+              </button>
+            </div>
+          </div>
+
+          <div class="text-center mt-3">
+                            <span class="txt1">
+                                Don’t have an account?
+                            </span>
+            <a class="txt2" href="#signUpModal" data-toggle="modal" data-dismiss="modal">
+              Sign Up
+            </a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</th:block>

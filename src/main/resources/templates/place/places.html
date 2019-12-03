@@ -1,0 +1,35 @@
+<th:block th:fragment>
+  <section class="top_place section_padding">
+    <div class="container-fluid">
+      <div class="row justify-content-center">
+        <div class="col-xl-6">
+          <div class="section_tittle text-center">
+            <h2>Places to visit</h2>
+            <p>Waters make fish every without firmament saw had. Morning air subdue. Our. Air very one.
+              Whales grass is fish whales winged.</p>
+          </div>
+        </div>
+      </div>
+      <div class="container">
+        <div class="row">
+          <th:block th:each="place : ${places}">
+            <div class="col-sm-12 col-md-6 col-lg-4 mb-3">
+              <div class="card card-hover">
+                <a th:href="@{places/details/{id} (id=${place.id})}" class="place_btn">
+                  <img class="card-img-top" th:src="${place.headerImageUrl}" alt="Card image cap">
+                  <div class="card-body">
+                    <h4 class="card-title" th:text="${place.name}"></h4>
+                    <h5 class="card-title" th:text="${place.province}"></h5>
+                    <div class="module-truncate fade-truncate">
+                      <p class="card-text" th:text="${place.info}"></p>
+                    </div>
+                  </div>
+                </a>
+              </div>
+            </div>
+          </th:block>
+        </div>
+      </div>
+    </div>
+  </section>
+</th:block>

@@ -1,0 +1,26 @@
+<th:block th:fragment>
+    <ul class="navbar-nav mobile-device-dir">
+        <li class="nav-item my-auto" >
+            <a th:href="@{/creators}" sec:authorize="hasRole('ROLE_CREATOR')" class="nav-link" data-toggle="tooltip" data-placement="bottom" title="Creator Place">
+                <i class="fas fa-plus-square"></i>
+            </a>
+        </li>
+        <li class="nav-item my-auto" >
+            <a th:href="@{/admin}" sec:authorize="hasRole('ROLE_ADMIN')" class="nav-link" data-toggle="tooltip" data-placement="bottom" title="Admin">
+                <i class="fas fa-tools"></i>
+            </a>
+        </li>
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button"
+               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <img th:src="${#authentication.getPrincipal().getProfilePictureUrl()}" width="40" height="40" class="rounded-circle">
+            </a>
+            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                <a th:href="@{/users/edit-profile}" class="dropdown-item">Edit Profile</a>
+                <form class="dropdown-item" th:action="@{/logout}" method="post">
+                    <button class="dropdown-item logout-button">Sign out</button>
+                </form>
+            </div>
+        </li>
+    </ul>
+</th:block>

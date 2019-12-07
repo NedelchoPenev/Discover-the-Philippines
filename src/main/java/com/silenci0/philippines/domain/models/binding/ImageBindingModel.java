@@ -1,34 +1,47 @@
 package com.silenci0.philippines.domain.models.binding;
 
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
+
 public class ImageBindingModel {
-  private String id;
-  private String public_id;
-  private String url;
+  private List<MultipartFile> images;
+  private String place;
+  private String placeNew;
+  private String province;
 
   public ImageBindingModel() {
   }
 
-  public String getId() {
-    return id;
+  public List<MultipartFile> getImages() {
+    return images;
   }
 
-  public void setId(String id) {
-    this.id = id;
+  public void setImages(List<MultipartFile> images) {
+    this.images = images;
   }
 
-  public String getPublic_id() {
-    return public_id;
+  public String getPlace() {
+    return place;
   }
 
-  public void setPublic_id(String public_id) {
-    this.public_id = public_id;
+  public void setPlace(String place) {
+    this.place = place;
   }
 
-  public String getUrl() {
-    return url;
+  public String getPlaceNew() {
+    return placeNew;
   }
 
-  public void setUrl(String url) {
-    this.url = url;
+  public void setPlaceNew(String placeNew) {
+    this.placeNew = placeNew;
+  }
+
+  public String getProvince() {
+    return province;
+  }
+
+  public void setProvince(String province) {
+    this.province = province;
   }
 }

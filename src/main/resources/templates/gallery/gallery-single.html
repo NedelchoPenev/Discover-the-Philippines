@@ -1,28 +1,21 @@
 <main class="main-content">
-  <div class="container-fluid photos">
-    <div class="row pt-4 mb-5 text-center">
+  <div class="container photos">
+    <div class="row my-3 text-center">
       <div class="col-12">
-        <h2 class="mb-4">Cebu &mdash; 42 Photos</h2>
+        <h2 class="mb-4" th:text="|${name} &mdash; ${images.size()} Photos|"></h2>
       </div>
     </div>
     <div class="row">
-      <div class="col-10 col-lg-10">
-        <div class="grid">
-          <div class="grid-sizer"></div>
-          <div class="grid-item" data-aos="fade-up">
-            <a href="../img/img_1.jpg" class="d-block photo-item" data-fancybox="gallery">
-              <img src="../img/img_1.jpg" alt="Image">
-              <div class="photo-text-more">
-                                    <span class="icon icon-search">
-                                        <i class="fas fa-search"></i>
-                                    </span>
-              </div>
-            </a>
+      <div class="col-md-4 my-1 px-1" data-aos="fade-up" th:each="image : ${images}">
+        <a th:href="${image.url}" class="d-block photo-item" data-fancybox="gallery"
+           th:data-caption="|Uploaded by <a href='@{/users/profile/}${image.uploaderUsername}'>${image.uploaderUsername}</a>|">
+          <img th:src="${image.url}" class="img-fluid rounded w-100" alt="Image">
+          <div class="photo-text-more">
+                <span class="icon icon-search">
+                  <i class="fas fa-search"></i>
+                </span>
           </div>
-        </div>
-      </div>
-      <div class="col-2 col-lg-2">
-
+        </a>
       </div>
     </div>
   </div>

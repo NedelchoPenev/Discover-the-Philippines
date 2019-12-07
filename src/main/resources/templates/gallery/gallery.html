@@ -1,22 +1,24 @@
 <main class="main-content">
-  <div class="container-fluid photos">
-    <div class="row">
-      <div class="col-10 col-lg-10">
-        <div class="grid">
-          <div class="grid-sizer"></div>
-          <div class="grid-item" data-aos="fade-up">
-            <a th:href="@{gallery/single}" class="d-block photo-item">
-              <img src="../img/img_9.jpg" alt="Image" class="img-fluid">
-              <div class="photo-text-more">
-                <div class="photo-text-more">
-                  <h3 class="heading">Photos Title Here</h3>
-                  <span class="meta">42 Photos</span>
-                </div>
-              </div>
-            </a>
-          </div>
+  <div class="container photos">
+    <div class="row my-3 text-center">
+      <div class="col-12">
+        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+          <label class="btn btn-secondary active">
+            <input type="radio" name="options" id="all" autocomplete="off" value="all" checked> All
+          </label>
+          <label class="btn btn-secondary">
+            <input type="radio" name="options" id="province" autocomplete="off" value="province"> By Province
+          </label>
+          <label class="btn btn-secondary">
+            <input type="radio" name="options" id="place" autocomplete="off" value="place"> By Place
+          </label>
+          <label class="btn btn-secondary">
+            <input type="radio" name="options" id="uploader" autocomplete="off" value="uploader"> By Uploader
+          </label>
         </div>
       </div>
+    </div>
+    <div class="row images-data">
     </div>
   </div>
 </main>

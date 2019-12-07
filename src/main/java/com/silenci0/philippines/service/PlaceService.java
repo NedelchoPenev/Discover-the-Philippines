@@ -6,11 +6,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.io.IOException;
+import java.security.Principal;
 import java.util.List;
 
 public interface PlaceService {
 
-  void savePlace(PlaceServiceModel placeServiceModel) throws IOException;
+  void savePlace(PlaceServiceModel placeServiceModel, Principal principal) throws IOException;
 
   List<AllPlacesServiceModel> findAll();
 
@@ -22,5 +23,5 @@ public interface PlaceService {
 
   void deleteById(String id);
 
-  void editPlace(String id, PlaceServiceModel placeServiceModel) throws IOException;
+  void editPlace(String id, PlaceServiceModel placeServiceModel, Principal principal) throws IOException;
 }

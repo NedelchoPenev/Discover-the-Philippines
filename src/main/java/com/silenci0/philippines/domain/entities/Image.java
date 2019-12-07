@@ -6,7 +6,6 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "image")
 public class Image extends BaseEntity {
-
   private String url;
   private String public_id;
   private String place;
@@ -17,7 +16,7 @@ public class Image extends BaseEntity {
   public Image() {
   }
 
-  @Column(unique = true, nullable = false)
+  @Column(nullable = false)
   public String getUrl() {
     return url;
   }
@@ -51,7 +50,7 @@ public class Image extends BaseEntity {
     this.province = province;
   }
 
-  @Column(unique = true, nullable = false)
+  @Column(nullable = false)
   public LocalDateTime getUploadDate() {
     return uploadDate;
   }
@@ -61,15 +60,6 @@ public class Image extends BaseEntity {
   }
 
   @ManyToOne(targetEntity = User.class, fetch = FetchType.EAGER)
-  @JoinTable(name = "uploader", joinColumns =
-  @JoinColumn(
-    name = "image_id",
-    referencedColumnName = "id"
-  ),
-    inverseJoinColumns = @JoinColumn(
-      name = "user_id",
-      referencedColumnName = "id"
-    ))
   public User getUploader() {
     return uploader;
   }

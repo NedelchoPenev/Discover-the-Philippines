@@ -20,4 +20,9 @@ public class HomeController extends BaseController {
     public ModelAndView home(@ModelAttribute("bindingModel") RegisterUserBindingModel bindingModel, ModelAndView modelAndView) {
         return redirect("/", modelAndView);
     }
+
+    @GetMapping("/login")
+    public ModelAndView loginRedirect(@ModelAttribute("bindingModel") RegisterUserBindingModel bindingModel, ModelAndView modelAndView) {
+        return redirect("/", modelAndView);
+    }
 }

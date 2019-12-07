@@ -1,44 +1,67 @@
 package com.silenci0.philippines.web.controllers;
 
 import com.silenci0.philippines.domain.models.binding.RegisterUserBindingModel;
+import com.silenci0.philippines.domain.models.service.ImageServiceModel;
 import com.silenci0.philippines.domain.models.view.ImageViewModel;
 import com.silenci0.philippines.service.ImageService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/gallery")
-public class GalleryController extends BaseController{
-    private final ImageService imageService;
-    private final ModelMapper modelMapper;
+public class GalleryController extends BaseController {
 
-    @Autowired
-    public GalleryController(ImageService imageService, ModelMapper modelMapper) {
-        this.imageService = imageService;
-        this.modelMapper = modelMapper;
-    }
+  private final ImageService imageService;
+  private final ModelMapper modelMapper;
 
-    @GetMapping("all")
-    public ModelAndView getGallery(@ModelAttribute("bindingModel") RegisterUserBindingModel bindingModel, ModelAndView modelAndView) {
-        List<ImageViewModel> images = this.imageService.findAll()
-          .stream()
-          .map(i -> this.modelMapper.map(i, ImageViewModel.class))
-          .collect(Collectors.toList());
+  @Autowired
+  public GalleryController(ImageService imageService, ModelMapper modelMapper) {
+    this.imageService = imageService;
+    this.modelMapper = modelMapper;
+  }
 
-        modelAndView.addObject("quantity", images.size());
-        return this.view("gallery/gallery-all", "images", images, modelAndView);
-    }
+  @GetMapping("")
+  public ModelAndView getGallery(@ModelAttribute("bindingModel") RegisterUserBindingModel bindingModel,
+                                 ModelAndView modelAndView) {
+    return this.view("gallery/gallery", modelAndView);
+  }
 
-    @GetMapping("single")
-    public ModelAndView getSingle(@ModelAttribute("bindingModel") RegisterUserBindingModel bindingModel, ModelAndView modelAndView) {
-        return this.view("gallery/gallery-single", modelAndView);
-    }
+  @GetMapping("fetch/{category}")
+  @ResponseBody()
+  public Map<String, Set<ImageServiceModel>> getByCategory(@PathVariable String category) {
+    return this.imageService.findAllByCategory(category);
+  }
+
+  @GetMapping("/fetch/all")
+  @ResponseBody()
+  public List<ImageViewModel> getAllGallery() {
+    return this.imageService.findAll()
+      .stream()
+      .map(i -> this.modelMapper.map(i, ImageViewModel.class))
+      .collect(Collectors.toList());
+  }
+
+  @GetMapping("{category}/{name}")
+  @ResponseBody()
+  public ModelAndView getAllFromCategoryByName(@ModelAttribute("bindingModel")
+                                                   RegisterUserBindingModel bindingModel,
+                                               ModelAndView modelAndView,
+                                               @PathVariable String name,
+                                               @PathVariable String category) {
+    List<ImageViewModel> images = this.imageService.findAllFromCategoryByName(category, name)
+      .stream()
+      .map(i -> this.modelMapper.map(i, ImageViewModel.class))
+      .collect(Collectors.toList());
+
+    modelAndView.addObject("name", name);
+    return this.view("gallery/gallery-single", "images", images, modelAndView);
+  }
 }

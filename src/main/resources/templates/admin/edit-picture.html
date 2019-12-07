@@ -1,0 +1,38 @@
+<section>
+  <div class="container" id="add-pictures">
+    <form th:action="@{/admin/edit-picture/{id} (id = *{id})}" method="POST" th:object="${bindingModel}">
+      <div class="mt-3 w-50 mx-auto">
+        <h3>
+          Edit picture
+        </h3>
+      </div>
+      <div class="mt-3 w-50 mx-auto">
+        <img th:src="*{url}"  alt="Image">
+        <input th:value="*{url}" hidden name="url"/>
+      </div>
+      <div class="mt-3 w-50 mx-auto">
+        <h3>Edit Place</h3>
+        <select class="form-control" id="add-places" name="place"
+                th:classappend="${#fields.hasErrors('place')} ? 'is-invalid'">
+          <option selected="" disabled="">--- Select Place ---</option>
+        </select>
+        <th:block th:if="${#fields.hasErrors('place')}">
+          <small class="text-danger" th:errors="*{place}"></small>
+        </th:block>
+      </div>
+      <div class="mt-3 w-50 mx-auto">
+        <h3>OR Add Place if not existing</h3>
+        <input type="text" class="form-control" name="placeNew" placeholder="Enter Place Name...">
+      </div>
+      <div class="mt-3 w-50 mx-auto">
+        <th:block th:include="~{fragments/select-province}"></th:block>
+        <th:block th:if="${#fields.hasErrors('province')}">
+          <small class="text-danger" th:errors="*{province}"></small>
+        </th:block>
+      </div>
+      <div class="m-5 text-center">
+        <button type="submit" class="button">Edit</button>
+      </div>
+    </form>
+  </div>
+</section>

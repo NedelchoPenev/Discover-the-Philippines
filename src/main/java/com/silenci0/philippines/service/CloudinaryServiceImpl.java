@@ -39,4 +39,9 @@ public class CloudinaryServiceImpl implements CloudinaryService {
     return this.cloudinary.uploader()
       .upload(file, new HashMap());
   }
+
+  @Override
+  public Map deleteImage(String public_id) throws IOException {
+    return this.cloudinary.uploader().destroy(public_id, Map.of());
+  }
 }

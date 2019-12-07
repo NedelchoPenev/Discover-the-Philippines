@@ -4,13 +4,9 @@ import java.util.Set;
 
 public class UserServiceModel extends BaseServiceModel {
     private String username;
-
     private String password;
-
     private String email;
-
     private String country;
-
     private Set<RoleServiceModel> authorities;
 
     public UserServiceModel() {

@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 
 public class ImageServiceModel extends BaseServiceModel{
   private String url;
-  private String public_id;
   private String place;
   private String province;
   private LocalDateTime uploadDate;
@@ -19,14 +18,6 @@ public class ImageServiceModel extends BaseServiceModel{
 
   public void setUrl(String url) {
     this.url = url;
-  }
-
-  public String getPublic_id() {
-    return public_id;
-  }
-
-  public void setPublic_id(String public_id) {
-    this.public_id = public_id;
   }
 
   public String getPlace() {

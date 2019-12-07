@@ -8,10 +8,7 @@ import com.silenci0.philippines.service.PlaceService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -49,5 +46,13 @@ public class PlaceController extends BaseController {
     modelAndView.addObject("hotel", place.getPlaceHotels());
     modelAndView.addObject("map", place.getPlaceOnMap());
     return this.view("place/place-details", "place", place, modelAndView);
+  }
+
+  @GetMapping("fetch/all")
+  @ResponseBody()
+  public List<AllPlacesViewModel> fetchAllPlace() {
+    return this.placeService.findAll().stream()
+      .map(place -> this.modelMapper.map(place, AllPlacesViewModel.class))
+      .collect(Collectors.toList());
   }
 }

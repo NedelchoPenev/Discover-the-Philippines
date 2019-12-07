@@ -1,8 +1,6 @@
 package com.silenci0.philippines.domain.entities;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.Size;
 
 @Entity
@@ -10,7 +8,7 @@ import javax.validation.constraints.Size;
 public class Place extends BaseEntity {
 
   private String name;
-  private String headerImageUrl;
+  private Image headerImage;
   private String province;
   private String info;
   private String placeHotels;
@@ -30,13 +28,13 @@ public class Place extends BaseEntity {
     this.name = name;
   }
 
-  @Column(nullable = false, unique = true)
-  public String getHeaderImageUrl() {
-    return headerImageUrl;
+  @OneToOne(targetEntity = Image.class, optional = false, cascade = CascadeType.ALL)
+  public Image getHeaderImage() {
+    return headerImage;
   }
 
-  public void setHeaderImageUrl(String headerImageUrl) {
-    this.headerImageUrl = headerImageUrl;
+  public void setHeaderImage(Image headerImage) {
+    this.headerImage = headerImage;
   }
 
   @Column(nullable = false)

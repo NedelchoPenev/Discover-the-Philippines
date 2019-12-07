@@ -8,7 +8,7 @@ public class ThingsToDoBindingModel {
   private String id;
   private String name;
   private List<MultipartFile> images;
-  private List<ImageBindingModel> imagesUrls;
+  private List<ImageThingToDoBindingModel> imagesUrls;
   private String mainImageUrl;
   private String province;
   private String overview;
@@ -41,11 +41,11 @@ public class ThingsToDoBindingModel {
     this.images = images;
   }
 
-  public List<ImageBindingModel> getImagesUrls() {
+  public List<ImageThingToDoBindingModel> getImagesUrls() {
     return imagesUrls;
   }
 
-  public void setImagesUrls(List<ImageBindingModel> imagesUrls) {
+  public void setImagesUrls(List<ImageThingToDoBindingModel> imagesUrls) {
     this.imagesUrls = imagesUrls;
   }
 

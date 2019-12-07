@@ -33,5 +33,7 @@ public class ValidationConstants {
 
     public final static String EMPTY_ARTICLE = "Please, write the place article!";
 
+    public final static String FILL_PLACE = "Please, fill one of the place fields!";
+
     public final static String EMAIL_REGEX = "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$";
 }

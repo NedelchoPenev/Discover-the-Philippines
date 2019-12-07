@@ -10,4 +10,6 @@ public interface CloudinaryService {
   String uploadImage(MultipartFile multipartFile) throws IOException;
 
   Map uploadImageGetFullResponse(MultipartFile multipartFile) throws IOException;
+
+  Map deleteImage(String public_id) throws IOException;
 }

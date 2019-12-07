@@ -1,7 +1,11 @@
 package com.silenci0.philippines.config;
 
+import com.silenci0.philippines.domain.entities.Place;
+import com.silenci0.philippines.domain.entities.Post;
 import com.silenci0.philippines.domain.models.binding.EditProfileBindingModel;
 import com.silenci0.philippines.domain.models.binding.ThingsToDoBindingModel;
+import com.silenci0.philippines.domain.models.service.PlaceServiceModel;
+import com.silenci0.philippines.domain.models.service.PostAddServiceModel;
 import com.silenci0.philippines.domain.models.service.ThingsToDoDeleteImageServiceModel;
 import com.silenci0.philippines.domain.models.service.UserEditServiceModel;
 import org.modelmapper.ModelMapper;
@@ -31,6 +35,18 @@ public class ApplicationBeanConfiguration {
             @Override
             protected void configure() {
                 skip(destination.getImages());
+            }
+        });
+        modelMapper.addMappings(new PropertyMap<PlaceServiceModel, Place>() {
+            @Override
+            protected void configure() {
+                skip(destination.getHeaderImage());
+            }
+        });
+        modelMapper.addMappings(new PropertyMap<PostAddServiceModel, Post>() {
+            @Override
+            protected void configure() {
+                skip(destination.getCategories());
             }
         });
 

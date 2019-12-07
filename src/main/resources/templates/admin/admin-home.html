@@ -37,7 +37,7 @@
         </a>
       </div>
       <div class="col-sm-12 col-md-6 col-lg-4 text-center my-auto">
-        <a href="" class="creator-card card shadow .z-depth-2 rounded mb-3">
+        <a th:href="@{admin/edit-pictures}" class="creator-card card shadow .z-depth-2 rounded mb-3">
           <div class="embed-responsive .embed-responsive-1by1 ">
             <img src="https://res.cloudinary.com/duddzgxsd/image/upload/v1573225419/ezgif-1-fda9dcfaa2c6.webp"
               class="card-img" alt="pictures">
@@ -49,10 +49,21 @@
         </a>
       </div>
       <div class="col-sm-12 col-md-6 col-lg-4 text-center my-auto">
+        <a th:href="@{admin/edit-categories}" class="creator-card card shadow .z-depth-2 rounded mb-3">
+          <div class="embed-responsive .embed-responsive-1by1 ">
+            <img src="https://res.cloudinary.com/duddzgxsd/image/upload/v1575635305/ezgif.com-resize.webp"
+              class="card-img" alt="admin">
+          </div>
+          <div class="card-img-overlay d-flex flex-column justify-content-center">
+            <h3 class="card-title justify-content-center bg-light border border-dark font-weight-bold">Edit Categories</h3>
+          </div>
+        </a>
+      </div>
+      <div class="col-sm-12 col-md-6 col-lg-4 text-center my-auto">
         <a th:href="@{admin/edit-users}" class="creator-card card shadow .z-depth-2 rounded mb-3">
           <div class="embed-responsive .embed-responsive-1by1 ">
             <img src="https://res.cloudinary.com/duddzgxsd/image/upload/v1573225510/ezgif-1-7feff6b2128d.webp"
-              class="card-img" alt="admin">
+                 class="card-img" alt="admin">
           </div>
           <div class="card-img-overlay d-flex flex-column justify-content-center">
             <h3 class="card-title justify-content-center bg-light border border-dark font-weight-bold">Edit Users</h3>

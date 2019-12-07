@@ -25,6 +25,8 @@ public class User extends BaseEntity implements UserDetails {
     private LocalDateTime lastDateLogin;
     private String profilePictureUrl;
     private Set<Role> authorities;
+    private Set<Post> posts;
+    private Set<Comment> comments;
 
     public User() {
     }
@@ -127,6 +129,24 @@ public class User extends BaseEntity implements UserDetails {
 
     public void setAuthorities(Set<Role> authorities) {
         this.authorities = authorities;
+    }
+
+    @OneToMany(targetEntity = Post.class)
+    public Set<Post> getPosts() {
+        return posts;
+    }
+
+    public void setPosts(Set<Post> posts) {
+        this.posts = posts;
+    }
+
+    @OneToMany(targetEntity = Comment.class)
+    public Set<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(Set<Comment> comments) {
+        this.comments = comments;
     }
 
     @Override

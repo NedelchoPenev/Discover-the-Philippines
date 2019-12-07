@@ -1,64 +1,43 @@
-<th:block th:fragment>
-  <section>
-    <div class="container">
-      <form th:action="@{/creators/add-pictures}" method="POST" th:object="${bindingModel}">
-        <div class="text-center my-3">
-          <h3>
-            Upload pictures in the Gallery.
-          </h3>
-          <a href="#uploadImageModal" class="button mt-3" data-toggle="modal">Upload Pictures</a>
+<section>
+  <div class="container" id="add-pictures">
+    <form th:action="@{/creators/add-pictures}" method="POST" th:object="${bindingModel}" enctype="multipart/form-data">
+      <div class="mt-3 w-50 mx-auto">
+        <h3>
+          Upload pictures in the Gallery.
+        </h3>
+        <div class="custom-file my-2">
+          <input type="file" class="custom-file-input" id="validatedCustomFile" name="images"
+                 th:classappend="${#fields.hasErrors('images')} ? 'is-invalid'"
+                 accept="image/*" multiple="multiple" required>
+          <label class="custom-file-label" for="validatedCustomFile">Choose files...</label>
         </div>
-        <div class="mt-3 w-50 mx-auto">
-          <h3>Select Place</h3>
-          <select class="form-control" id="add-places" name="places">
-            <option selected="" disabled="">--- Select Place ---</option>
-          </select>
-        </div>
-        <div class="mt-3 w-50 mx-auto">
-          <h3>OR Add Place if not existing</h3>
-          <input type="text" class="form-control" name="imagePlaceName" placeholder="Enter Place Name...">
-        </div>
-        <div class="mt-3 w-50 mx-auto">
-          <th:block th:include="~{fragments/select-province}"></th:block>
-        </div>
-        <div class="m-5 text-center">
-          <button type="submit" class="button">Post</button>
-        </div>
-      </form>
-    </div>
-    <div class="modal show" role="dialog" aria-label="Insert Image" aria-modal="true" id="uploadImageModal"
-      aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h4 class="modal-title">Upload Pictures</h4>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close" aria-hidden="true">×</button>
-          </div>
-          <form class="login100-form">
-            <div class="modal-body">
-              <div class="form-group note-form-group note-group-select-from-files"><label class="note-form-label">Select
-                  from files</label>
-                <input class="note-image-input form-control-file note-form-control note-input" type="file" name="files" accept="image/*" multiple="multiple">
-              </div>
-            </div>
-            <div class="modal-footer">
-              <button type="submit" class="btn btn-primary note-btn note-btn-primary note-image-btn">Upload
-                Pictures</button>
-              <div>
-              </div>
-            </div>
-          </form>
-        </div>
+        <th:block th:if="${#fields.hasErrors('images')}">
+          <small class="text-danger" th:errors="*{images}"></small>
+        </th:block>
       </div>
-    </div>
-  </section>
-  <script>
-    fetch('/places/fetch')
-      .then((response) => response.json())
-      .then((json) => {
-        json.forEach((place) => $('#add-places')
-          .append(`<option value="${place.id}">${place.name}</option>`));
-      })
-      .catch((err) => console.log(err));
-  </script>
-</th:block>
+      <div class="mt-3 w-50 mx-auto">
+        <h3>Select Place</h3>
+        <select class="form-control" id="add-places" name="place"
+                th:classappend="${#fields.hasErrors('place')} ? 'is-invalid'">
+          <option selected="" disabled="">--- Select Place ---</option>
+        </select>
+        <th:block th:if="${#fields.hasErrors('place')}">
+          <small class="text-danger" th:errors="*{place}"></small>
+        </th:block>
+      </div>
+      <div class="mt-3 w-50 mx-auto">
+        <h3>OR Add Place if not existing</h3>
+        <input type="text" class="form-control" name="imagePlaceName" placeholder="Enter Place Name...">
+      </div>
+      <div class="mt-3 w-50 mx-auto">
+        <th:block th:include="~{fragments/select-province}"></th:block>
+        <th:block th:if="${#fields.hasErrors('province')}">
+          <small class="text-danger" th:errors="*{province}"></small>
+        </th:block>
+      </div>
+      <div class="m-5 text-center">
+        <button type="submit" class="button">Post</button>
+      </div>
+    </form>
+  </div>
+</section>

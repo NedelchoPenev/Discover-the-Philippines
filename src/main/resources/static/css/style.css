@@ -4166,3 +4166,7 @@ table.table .avatar {
     height: 250px;
   }
 }
+
+.card-img{
+  max-height: 450px;
+}

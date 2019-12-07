@@ -28,7 +28,7 @@ public class ThingsToDo extends BaseEntity {
   }
 
   @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
-  @JoinTable(name = "images", joinColumns = @JoinColumn(
+  @JoinTable(name = "thing_to_do_images", joinColumns = @JoinColumn(
     name = "things_to_do_id",
     referencedColumnName = "id"
   ), inverseJoinColumns = @JoinColumn(

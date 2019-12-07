@@ -1,6 +1,7 @@
 <th:block th:fragment>
   <h3>Select Province</h3>
-  <select class="form-control" id="choose-province" name="province" th:classappend="${#fields.hasErrors('province')} ? 'is-invalid'">
+  <select class="form-control" id="choose-province" name="province"
+          th:classappend="${#fields.hasErrors('province')} ? 'is-invalid'">
     <option selected="" disabled="">--- Select Province ---</option>
     <option value="Abra" th:selected="*{province == 'Abra'}">Abra</option>
     <option value="Agusan del Norte" th:selected="*{province == 'Agusan del Norte'}">Agusan del Norte</option>

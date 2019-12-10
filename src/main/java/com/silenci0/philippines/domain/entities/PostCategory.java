@@ -4,17 +4,16 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "category")
 public class PostCategory extends BaseEntity{
   private String name;
-  private Set<Post> posts;
+  private List<Post> posts = new ArrayList<>();
 
   public PostCategory() {
-    this.posts = new HashSet<>();
   }
 
   @Column(unique = true, nullable = false)
@@ -27,11 +26,11 @@ public class PostCategory extends BaseEntity{
   }
 
   @ManyToMany(targetEntity = Post.class)
-  public Set<Post> getPosts() {
+  public List<Post> getPosts() {
     return posts;
   }
 
-  public void setPosts(Set<Post> posts) {
+  public void setPosts(List<Post> posts) {
     this.posts = posts;
   }
 

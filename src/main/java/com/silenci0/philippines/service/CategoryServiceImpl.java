@@ -3,6 +3,7 @@ package com.silenci0.philippines.service;
 import com.silenci0.philippines.domain.entities.Post;
 import com.silenci0.philippines.domain.entities.PostCategory;
 import com.silenci0.philippines.domain.models.service.CategoryServiceModel;
+import com.silenci0.philippines.domain.models.service.CategoryTopServiceModel;
 import com.silenci0.philippines.repository.CategoryRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +40,23 @@ public class CategoryServiceImpl implements CategoryService {
       .stream()
       .map(c -> this.modelMapper.map(c, CategoryServiceModel.class))
       .collect(Collectors.toSet());
+  }
+
+  @Override
+  public List<CategoryTopServiceModel> findTopCategories() {
+    List<CategoryTopServiceModel> topCategories = this.categoryRepository.findAll()
+      .stream()
+      .map(c -> {
+        CategoryTopServiceModel serviceModel = this.modelMapper.map(c, CategoryTopServiceModel.class);
+        serviceModel.setPostsSize(c.getPosts().isEmpty() ? 0 : c.getPosts().size());
+
+        return serviceModel;
+      })
+      .sorted((c1, c2) -> c2.getPostsSize().compareTo(c1.getPostsSize()))
+      .limit(5)
+      .collect(Collectors.toList());
+
+    return topCategories;
   }
 
   @Override

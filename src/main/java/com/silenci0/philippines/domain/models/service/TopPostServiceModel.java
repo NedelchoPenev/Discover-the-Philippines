@@ -1,18 +1,14 @@
 package com.silenci0.philippines.domain.models.service;
 
 import java.time.LocalDateTime;
-import java.util.Set;
 
-public class AllPostsServiceModel extends BaseServiceModel{
+public class TopPostServiceModel extends BaseServiceModel{
   private String title;
   private String headerImageUrl;
-  private String article;
-  private Set<String> categories;
   private Integer likesSize;
-  private Integer commentsSize;
   private LocalDateTime datePosted;
 
-  public AllPostsServiceModel() {
+  public TopPostServiceModel() {
   }
 
   public String getTitle() {
@@ -31,36 +27,12 @@ public class AllPostsServiceModel extends BaseServiceModel{
     this.headerImageUrl = headerImageUrl;
   }
 
-  public String getArticle() {
-    return article;
-  }
-
-  public void setArticle(String article) {
-    this.article = article;
-  }
-
-  public Set<String> getCategories() {
-    return categories;
-  }
-
-  public void setCategories(Set<String> categories) {
-    this.categories = categories;
-  }
-
   public Integer getLikesSize() {
     return likesSize;
   }
 
   public void setLikesSize(Integer likesSize) {
     this.likesSize = likesSize;
-  }
-
-  public Integer getCommentsSize() {
-    return commentsSize;
-  }
-
-  public void setCommentsSize(Integer commentsSize) {
-    this.commentsSize = commentsSize;
   }
 
   public LocalDateTime getDatePosted() {

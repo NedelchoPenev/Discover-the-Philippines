@@ -77,7 +77,7 @@
             :'#'">Previous</a>
           </li>
           <th:block th:each="iter : ${#numbers.sequence(1, page.getTotalPages())}">
-            <li class="page-item mx-1">
+            <li class="page-item mx-1" th:if="(${iter} > 0)">
               <a th:class="${page.getNumber() != iter - 1} ? 'page-link' : 'page-link disabled'"
                  th:href="${page.getNumber() != iter - 1} ? @{/admin/edit-pictures/(page=${iter - 1},size=${page.getSize()}, sort=${#strings.replace(page.sort,': ',',')})}: '#'"
                  th:text="${iter}">

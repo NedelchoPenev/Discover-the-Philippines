@@ -173,4 +173,73 @@ $(function () {
   }
 });
 
+$(function () {
+  if ($('aside').is($('.post_category_widget'))) {
+    fetch('/category/fetch/top')
+      .then((response) => response.json())
+      .then((json) => {
+        json.forEach((category) => $('.cat-list')
+          .append(`<li>
+            <a href="/blog/category/${category.id}" class="d-flex">
+              <p>${category.name}</p>
+              <p class="text-success">&nbsp(${category.postsSize})</p>
+            </a>
+          </li>`));
+      })
+      .catch((err) => console.log(err));
+  }
+});
+
+$(function () {
+  if ($('aside').is($('.instagram_feeds'))) {
+    fetch('/gallery/fetch/all')
+      .then((response) => response.json())
+      .then((json) => {
+        json.sort((i1, i2) => i2.uploadDate - i1.uploadDate)
+          .slice(0, 6).forEach((image) =>
+          $('.instagram_row').append(`<li>
+            <a href="${image.url}" data-fancybox="gallery">
+              <img class="img-fluid" src="${image.url}" alt="missing image">
+            </a>
+          </li>`));
+      })
+      .catch((err) => console.log(err));
+  }
+});
+
+$(function () {
+  if ($('aside').is($('.popular_post_widget'))) {
+    fetch('/blog/fetch/top-posts')
+      .then((response) => response.json())
+      .then((json) => {
+        json.forEach((post) => {
+          let date = new Date(post.datePosted).toLocaleDateString('en-GB', {
+            year: 'numeric',
+            month: 'short',
+            day: '2-digit'
+          });
+
+          let title = post.title.slice(0, 15);
+          let trunc = post.title.length > 15 ? '...' : '';
+
+          $('#popular_posts').append(`
+        <div class="media post_item row">
+          <div class="col-md-4">
+            <img src="${post.headerImageUrl}" alt="post">
+          </div>
+          <div class="media-body col-md-8">
+            <a href="/blog/${post.id}">
+              <h3>${title + trunc}</h3>
+            </a>
+            <p>${date}</p>
+            <p>${post.likesSize} likes</p>
+          </div>
+        </div>
+          `)
+        });
+      })
+      .catch((err) => console.log(err));
+  }
+});
+
 $("time.timeago").timeago();

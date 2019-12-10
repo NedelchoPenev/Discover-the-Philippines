@@ -1,0 +1,114 @@
+<section class="blog_area single-post-area section_padding">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 posts-list">
+        <div class="single-post">
+          <div class="feature-img w-100">
+            <img class="img-fluid w-100" th:src="${post.headerImageUrl}" alt="missing image">
+          </div>
+          <div class="blog_details">
+            <h2 th:text="${post.title}"></h2>
+            <ul class="blog-info-link mt-3 mb-4">
+              <li><i class="far fa-user"></i>
+                <a th:href="@{/blog/category/{id} (id = ${category.id})}"
+                   th:each="category, iter : ${post.categories}">
+                <span class="mr-0" th:text="${category.name}">
+                </span><span th:if="(${iter.index} == ${#lists.size(post.comments)})">,</span>
+                </a>
+              </li>
+              <li><a href="#"><i class="far fa-comments"></i>
+                <span th:text="${#lists.size(post.comments)}"></span> Comments</a></li>
+            </ul>
+            <p class="excert" th:utext="${post.article}">
+            </p>
+          </div>
+        </div>
+        <div class="navigation-top">
+          <div class="d-sm-flex text-center">
+            <a th:href="${isLikeable} ?
+            @{/blog/{postId}/like (postId = ${post.id})} :
+              '#'"
+               class="like-info">
+              <i sec:authorize="isAuthenticated()" class="far fa-heart" title="" data-toggle="tooltip"
+                 data-original-title="Like"></i>
+              <i sec:authorize="isAnonymous()" class="far fa-heart" title="" data-toggle="tooltip"
+                 data-original-title="Login to Like"></i>
+            </a>
+            <span class="align-middle">
+                  <span sec:authorize="isAuthenticated()" th:if="${!isLikeable}">You and</span>
+                  <span th:text="${#sets.size(post.likes)}"></span> people like this</span>
+            <div class="col-sm-6 text-center my-2 my-sm-0">
+            </div>
+            <ul class="social-icons">
+              <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
+              <li><a href="#"><i class="fab fa-twitter"></i></a></li>
+              <li><a href="#"><i class="fab fa-dribbble"></i></a></li>
+              <li><a href="#"><i class="fab fa-behance"></i></a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="blog-author">
+          <div class="media align-items-center">
+            <img th:src="${post.author.profilePictureUrl}" alt="missing image">
+            <div class="media-body">
+              <a th:href="@{/users/profile/{username} (username = ${post.author.username})}">
+                <h4 th:text="${#strings.isEmpty(post.author.fullName)} ?
+                    ${post.author.username} :
+                    ${post.author.fullName}"></h4>
+              </a>
+              <p th:text="${#strings.abbreviate(post.author.aboutMe, 200)}"></p>
+            </div>
+          </div>
+        </div>
+        <div class="comments-area">
+          <h4><span th:text="${#lists.size(post.comments)}"></span> Comments</h4>
+          <th:block th:if="${#lists.isEmpty(post.comments)}">
+            <h3>Be the first. Leave a comment!</h3></th:block>
+          <div class="comment-list" th:each="comment : ${post.comments}">
+            <div class="row justify-content-between">
+              <div class="thumb col-md-2">
+                <img th:src="${comment.commenter.profilePictureUrl}" alt="missing image">
+              </div>
+              <div class="col-md-10">
+                <p class="comment" th:text="${comment.content}"></p>
+                <div class="d-flex justify-content-between">
+                  <div class="d-flex align-items-center">
+                    <h5>
+                      <a th:href="@{/users/profile/{username}
+                        (username = ${comment.commenter.username})}"
+                         th:text="${#strings.isEmpty(comment.commenter.fullName)} ?
+                           ${comment.commenter.username} :
+                           ${comment.commenter.fullName}
+                        "></a>
+                    </h5>
+                    <p class="date" th:text="${#temporals.format(comment.dateCommented, 'dd-MMM-yyyy HH:mm:ss')}"></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="comment-form">
+          <h4>Leave a Comment</h4>
+          <form class="form-contact comment_form" th:method="POST"
+                th:action="@{/blog/comment/{postId} (postId = ${post.id})}">
+            <div class="row">
+              <div class="col-12">
+                <div class="form-group">
+                    <textarea class="form-control w-100" name="comment" id="comment" cols="30"
+                              rows="9" placeholder="Write Comment" required></textarea>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <button sec:authorize="isAuthenticated()"
+                      type="submit" class="button button-contactForm btn_1">Post Comment</button>
+              <h3 sec:authorize="isAnonymous()">Login to Leave a Comment</h3>
+            </div>
+          </form>
+        </div>
+      </div>
+      <th:block th:include="~{fragments/blog-aside}"></th:block>
+    </div>
+  </div>
+</section>

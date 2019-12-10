@@ -27,7 +27,7 @@
             <form th:action="@{/admin/edit-thing-to-do/}" th:method="get">
               <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
               <div class="filter-group">
-                <label>Place name</label>
+                <label>Thing to do</label>
                 <input type="text" class="form-control" name="name">
               </div>
             </form>
@@ -68,30 +68,7 @@
         </th:block>
         </tbody>
       </table>
-      <div class="clearfix">
-        <ul class="pagination justify-content-center">
-          <li class="page-item mx-1">
-            <a th:class="${page.hasPrevious()} ? 'page-link' : 'page-link disabled'"
-               th:href="${page.hasPrevious()}
-            ? @{/admin/edit-things-to-do/(page=${page.previousPageable().getPageNumber()},size=${page.getSize()})}
-            :'#'">Previous</a>
-          </li>
-          <th:block th:each="iter : ${#numbers.sequence(1, page.getTotalPages())}">
-            <li class="page-item mx-1">
-              <a th:class="${page.getNumber() != iter - 1} ? 'page-link' : 'page-link disabled'"
-                 th:href="${page.getNumber() != iter - 1} ? @{/admin/edit-things-to-do/(page=${iter - 1},size=${page.getSize()})}: '#'"
-                 th:text="${iter}">
-              </a>
-            </li>
-          </th:block>
-          <li class="page-item mx-1">
-            <a th:class="${page.hasNext()} ? 'page-link' : 'page-link disabled'"
-               th:href="${page.hasNext()}
-            ? @{/admin/edit-things-to-do/(page=${page.nextPageable().getPageNumber()},size=${page.getSize()})}
-            : '#'">Next</a>
-          </li>
-        </ul>
-      </div>
+      <div th:replace="fragments/pagination :: pagination (url='/admin/edit-things-to-do')"></div>
     </div>
   </div>
   <th:block th:include="~{fragments/delete-modal}"></th:block>

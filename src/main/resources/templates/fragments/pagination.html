@@ -1,0 +1,27 @@
+<th:block th:fragment="pagination(url)">
+  <div class="clearfix">
+    <ul class="pagination justify-content-center">
+      <li class="page-item mx-1">
+        <a th:class="${page.hasPrevious()} ? 'page-link' : 'page-link disabled'"
+           th:href="${page.hasPrevious()}
+            ? ${url} + @{/(page=${page.previousPageable().getPageNumber()},size=${page.getSize()})}
+            :'#'">Previous</a>
+      </li>
+      <th:block th:each="iter : ${#numbers.sequence(1, page.getTotalPages())}">
+        <li class="page-item mx-1" th:if="(${iter} > 0)">
+          <a th:class="${page.getNumber() != iter - 1} ? 'page-link' : 'page-link disabled'"
+             th:href="${page.getNumber() != iter - 1} ? ${url} + @{/(page=${iter - 1},
+                 size=${page.getSize()})}: '#'"
+             th:text="${iter}">
+          </a>
+        </li>
+      </th:block>
+      <li class="page-item mx-1">
+        <a th:class="${page.hasNext()} ? 'page-link' : 'page-link disabled'"
+           th:href="${page.hasNext()}
+            ? ${url} + @{/(page=${page.nextPageable().getPageNumber()},size=${page.getSize()})}
+            : '#'">Next</a>
+      </li>
+    </ul>
+  </div>
+</th:block>

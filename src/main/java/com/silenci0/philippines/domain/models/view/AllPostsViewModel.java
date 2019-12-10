@@ -10,6 +10,7 @@ public class AllPostsViewModel {
   private String headerImageUrl;
   private String article;
   private Set<String> categories;
+  private Integer likesSize;
   private Integer commentsSize;
   private LocalDateTime datePosted;
 
@@ -54,6 +55,14 @@ public class AllPostsViewModel {
 
   public void setCategories(Set<String> categories) {
     this.categories = categories;
+  }
+
+  public Integer getLikesSize() {
+    return likesSize;
+  }
+
+  public void setLikesSize(Integer likesSize) {
+    this.likesSize = likesSize;
   }
 
   public Integer getCommentsSize() {

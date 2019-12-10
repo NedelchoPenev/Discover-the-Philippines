@@ -11,4 +11,6 @@ import org.springframework.stereotype.Repository;
 public interface CategoryRepository extends JpaRepository<PostCategory, String> {
 
   Page<PostCategory> findAll(Pageable pageable);
+
+  Page<PostCategory> findById(String id, Pageable pageable);
 }

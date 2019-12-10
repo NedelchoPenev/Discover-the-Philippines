@@ -11,7 +11,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -58,7 +57,7 @@ public class PlaceServiceImpl implements PlaceService {
 
   @Override
   public PlaceServiceModel findById(String id) {
-    Place place = this.placeRepository.findById(id).orElseThrow(() -> new UsernameNotFoundException(PLACE_NOT_FOUND));
+    Place place = this.placeRepository.findById(id).orElseThrow(() -> new IllegalArgumentException(PLACE_NOT_FOUND));
 
     return this.modelMapper.map(place, PlaceServiceModel.class);
   }
@@ -82,7 +81,7 @@ public class PlaceServiceImpl implements PlaceService {
 
   @Override
   public void editPlace(String id, PlaceServiceModel placeServiceModel, Principal principal) throws IOException {
-    Place place = this.placeRepository.findById(id).orElseThrow(() -> new UsernameNotFoundException(PLACE_NOT_FOUND));
+    Place place = this.placeRepository.findById(id).orElseThrow(() -> new IllegalArgumentException(PLACE_NOT_FOUND));
 
     this.modelMapper.map(placeServiceModel, place);
 

@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.Http403ForbiddenEntryPoint;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
@@ -41,7 +42,8 @@ public class WebMvcSecurityConfiguration extends WebSecurityConfigurerAdapter {
       .logoutSuccessUrl("/")
       .and()
       .exceptionHandling()
-      .accessDeniedPage("/error/unauthorized")
+      .authenticationEntryPoint(new Http403ForbiddenEntryPoint())
+//      .accessDeniedPage("/error/unauthorized")
     ;
   }
 

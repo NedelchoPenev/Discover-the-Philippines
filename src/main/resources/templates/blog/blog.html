@@ -3,55 +3,51 @@
     <div class="row">
       <div class="col-lg-8 mb-5 mb-lg-0">
         <div class="blog_left_sidebar">
-          <article class="blog_item" th:each="post: ${posts}">
-            <div class="blog_item_img">
-              <a class="d-inline-block" th:href="@{blog/{id} (id = ${post.id})}">
-                <img class="card-img img-fluid" th:src="${post.headerImageUrl}" alt="bohol">
-              </a>
-              <a href="#" class="blog_item_date">
-                <h3 th:text="${#temporals.format(post.datePosted, 'dd')}"></h3>
-                <p th:text="${#temporals.format(post.datePosted, 'MMM yyyy')} "></p>
-              </a>
-            </div>
+          <th:block th:if="${#lists.isEmpty(posts)}">
+            <article class="blog_item">
+              <div class="blog_item_img">
+                <div class="d-inline-block">
+                  <img class="card-img img-fluid"
+                       src="https://i.imgur.com/3suxlvm.png" alt="missing image">
+                </div>
+              </div>
+              <div class="blog_details">
+                <div class="d-inline-block">
+                  <h2>Oh no! Try again!</h2>
+                </div>
+                <p>No such word in our database. Please try with different one.</p>
+              </div>
+            </article>
+          </th:block>
+          <th:block th:if="${not #lists.isEmpty(posts)}">
+            <article class="blog_item" th:each="post: ${posts}">
+              <div class="blog_item_img">
+                <a class="d-inline-block w-100" th:href="@{/blog/{id} (id = ${post.id})}">
+                  <img class="card-img img-fluid" th:src="${post.headerImageUrl}" alt="missing image">
+                </a>
+                <a href="#" class="blog_item_date">
+                  <h3 th:text="${#temporals.format(post.datePosted, 'dd')}"></h3>
+                  <p th:text="${#temporals.format(post.datePosted, 'MMM yyyy')} "></p>
+                </a>
+              </div>
 
-            <div class="blog_details">
-              <a class="d-inline-block" th:href="@{blog/{id} (id = ${post.id})}">
-                <h2 th:text="${post.title}"></h2>
-              </a>
-              <p th:utext="${#strings.abbreviate(post.article,250)}"></p>
-              <ul class="blog-info-link">
-                <li><a href="#"><i class="far fa-user"></i>
-                  <span th:text="${#strings.setJoin(post.categories,', ')}"></span></a></li>
-                <li><a href="#"><i class="far fa-comments"></i>
-                  <span th:text="${post.commentsSize}"></span> Comments</a></li>
-              </ul>
-            </div>
-          </article>
-          <div class="clearfix">
-            <ul class="pagination justify-content-center">
-              <li class="page-item mx-1">
-                <a th:class="${page.hasPrevious()} ? 'page-link' : 'page-link disabled'"
-                   th:href="${page.hasPrevious()}
-            ? @{/blog/(page=${page.previousPageable().getPageNumber()},size=${page.getSize()})}
-            :'#'"><i class="fas fa-angle-left"></i></a>
-              </li>
-              <th:block th:each="iter : ${#numbers.sequence(1, page.getTotalPages())}">
-                <li class="page-item mx-1" th:if="(${iter} > 0)">
-                  <a th:class="${page.getNumber() != iter - 1} ? 'page-link' : 'page-link disabled'"
-                     th:href="${page.getNumber() != iter - 1} ? @{/blog/(page=${iter - 1},
-										 size=${page.getSize()})}: '#'"
-                     th:text="${iter}">
-                  </a>
-                </li>
-              </th:block>
-              <li class="page-item mx-1">
-                <a th:class="${page.hasNext()} ? 'page-link' : 'page-link disabled'"
-                   th:href="${page.hasNext()}
-            ? @{/blog/(page=${page.nextPageable().getPageNumber()},size=${page.getSize()})}
-            : '#'"><i class="fas fa-angle-right"></i></a>
-              </li>
-            </ul>
-          </div>
+              <div class="blog_details">
+                <a class="d-inline-block" th:href="@{/blog/{id} (id = ${post.id})}">
+                  <h2 th:text="${post.title}"></h2>
+                </a>
+                <p th:utext="${#strings.abbreviate(post.article,250)}"></p>
+                <ul class="blog-info-link">
+                  <li><a href="#"><i class="far fa-user"></i>
+                    <span th:text="${#strings.setJoin(post.categories,', ')}"></span></a></li>
+                  <li><a href="#"><i class="far fa-heart"></i>
+                    <span th:text="${post.commentsSize}"></span> Likes</a></li>
+                  <li><a href="#"><i class="far fa-comments"></i>
+                    <span th:text="${post.commentsSize}"></span> Comments</a></li>
+                </ul>
+              </div>
+            </article>
+            <div th:replace="fragments/pagination :: pagination (url='/blog')"></div>
+          </th:block>
         </div>
       </div>
       <th:block th:include="~{fragments/blog-aside}"></th:block>

@@ -10,16 +10,15 @@ import java.util.Set;
 public class Post extends BaseEntity{
   private String title;
   private Image headerImage;
-  private Set<PostCategory> categories;
+  private Set<PostCategory> categories = new HashSet<>();
   private String article;
   private LocalDateTime datePosted;
   private User author;
 
-  private Set<User> likes;
-  private Set<Comment> comments;
+  private Set<User> likes = new HashSet<>();
+  private Set<Comment> comments = new HashSet<>();
 
   public Post() {
-    this.categories = new HashSet<>();
   }
 
   @Column(nullable = false)
@@ -96,7 +95,7 @@ public class Post extends BaseEntity{
     this.article = article;
   }
 
-  @OneToMany(targetEntity = Comment.class, cascade = CascadeType.ALL, orphanRemoval = true)
+  @OneToMany(targetEntity = Comment.class, cascade = CascadeType.ALL)
   public Set<Comment> getComments() {
     return comments;
   }
@@ -113,5 +112,23 @@ public class Post extends BaseEntity{
   public void removeCategory(PostCategory category) {
     this.categories.remove(category);
     category.removePost(this);
+  }
+
+  public void addLike(User user) {
+    this.likes.add(user);
+  }
+
+  public void removeLike(User user) {
+    this.likes.remove(user);
+  }
+
+  public void addComment(Comment comment, User user) {
+    this.comments.add(comment);
+    user.addComment(comment);
+  }
+
+  public void removeComment(Comment comment, User user) {
+    this.comments.add(comment);
+    user.removeComment(comment);
   }
 }

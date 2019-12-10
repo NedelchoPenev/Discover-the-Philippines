@@ -7,22 +7,15 @@ import java.time.LocalDateTime;
 import java.util.Set;
 
 public class UserProfileViewModel {
+
   private String username;
-
   private String fullName;
-
   private String aboutMe;
-
   private String email;
-
   private String country;
-
   private LocalDate registrationDate;
-
   private LocalDateTime lastDateLogin;
-
   private String profilePictureUrl;
-
   private Set<RoleServiceModel> authorities;
 
   public UserProfileViewModel() {

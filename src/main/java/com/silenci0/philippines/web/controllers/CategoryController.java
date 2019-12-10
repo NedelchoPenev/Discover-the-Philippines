@@ -2,6 +2,7 @@ package com.silenci0.philippines.web.controllers;
 
 import com.silenci0.philippines.domain.models.binding.CategoryBindingModel;
 import com.silenci0.philippines.domain.models.service.CategoryServiceModel;
+import com.silenci0.philippines.domain.models.view.CategoryTopViewModel;
 import com.silenci0.philippines.domain.models.view.CategoryViewModel;
 import com.silenci0.philippines.service.CategoryService;
 import org.modelmapper.ModelMapper;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -46,5 +48,14 @@ public class CategoryController extends BaseController{
       .stream()
       .map(c -> this.modelMapper.map(c, CategoryViewModel.class))
       .collect(Collectors.toSet());
+  }
+
+  @GetMapping("fetch/top")
+  @ResponseBody()
+  public List<CategoryTopViewModel> fetchTopCategories(){
+    return this.categoryService.findTopCategories()
+      .stream()
+      .map(c -> this.modelMapper.map(c, CategoryTopViewModel.class))
+      .collect(Collectors.toList());
   }
 }

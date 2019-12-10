@@ -27,7 +27,7 @@ public class ThingsToDoServiceImpl implements ThingsToDoService {
 
   private static final String NAME_NOT_FOUND = "Name not found!";
   private static final String ID_NOT_FOUND = "Entity with that id doesn't exist!";
-  private static final String MAIN_IMAGE = "You cannot delete the main image!";
+  private static final String MAIN_IMAGE = "Cannot delete the main image!";
   private final ThingsToDoRepository thingsToDoRepository;
   private final ImageRepository imageRepository;
   private final ModelMapper modelMapper;

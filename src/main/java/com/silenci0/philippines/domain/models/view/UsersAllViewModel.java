@@ -6,15 +6,10 @@ import java.util.Set;
 
 public class UsersAllViewModel {
   private String id;
-
   private String username;
-
   private LocalDate registrationDate;
-
   private LocalDateTime lastDateLogin;
-
   private String profilePictureUrl;
-
   private Set<String> authorities;
 
   public UsersAllViewModel() {

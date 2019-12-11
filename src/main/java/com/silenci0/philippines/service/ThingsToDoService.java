@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.List;
+import java.util.Set;
 
 public interface ThingsToDoService {
 
@@ -29,4 +30,7 @@ public interface ThingsToDoService {
   void editThingToDo(String id, ThingsToDoEditServiceModel serviceModel, Principal principal) throws IOException;
 
   ThingsToDoServiceModel findById(String id);
+
+  Set<ThingsToDoMainImageServiceModel> findNewestTakeFour();
+
 }

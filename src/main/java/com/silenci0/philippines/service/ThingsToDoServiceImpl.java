@@ -16,10 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.security.Principal;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -60,6 +57,7 @@ public class ThingsToDoServiceImpl implements ThingsToDoService {
     }
     thingsToDo.setImagesUrls(imagesUrls);
     thingsToDo.setMainImageUrl(imagesUrls.get(0).getUrl());
+    thingsToDo.setDateAdded(LocalDateTime.now());
     this.thingsToDoRepository.saveAndFlush(thingsToDo);
   }
 
@@ -166,6 +164,16 @@ public class ThingsToDoServiceImpl implements ThingsToDoService {
       .collect(Collectors.toList()));
 
     return serviceModel;
+  }
+
+  @Override
+  public Set<ThingsToDoMainImageServiceModel> findNewestTakeFour() {
+    return this.thingsToDoRepository.findAll()
+      .stream()
+      .sorted((t1, t2) -> t2.getDateAdded().compareTo(t1.getDateAdded()))
+      .map(t -> this.modelMapper.map(t, ThingsToDoMainImageServiceModel.class))
+      .limit(4)
+      .collect(Collectors.toSet());
   }
 
   private Image mapImage(ThingsToDo thingsToDo, UserServiceModel userByUsername, MultipartFile image) throws IOException {

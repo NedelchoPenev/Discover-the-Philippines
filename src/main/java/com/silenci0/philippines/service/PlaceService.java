@@ -24,4 +24,6 @@ public interface PlaceService {
   void deleteById(String id);
 
   void editPlace(String id, PlaceServiceModel placeServiceModel, Principal principal) throws IOException;
+
+  List<AllPlacesServiceModel> findNewestTakeFour();
 }

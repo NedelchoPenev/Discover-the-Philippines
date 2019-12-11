@@ -1,0 +1,71 @@
+<th:block>
+  <div class="container">
+    <div class="table-wrapper">
+      <div class="table-filter">
+        <div class="row">
+          <div class="col-sm-3">
+            <div class="show-entries">
+              <span>Show</span>
+              <select class="form-control" onchange="location = this.value;">
+                <option th:selected="${page.getSize() == 5}"
+                        th:value="@{/admin/edit-blog-posts/(page=0,size=5)}">5
+                </option>
+                <option th:selected="${page.getSize() == 10}"
+                        th:value="@{/admin/edit-blog-posts/(page=0,size=10)}">10
+                </option>
+                <option th:selected="${page.getSize() == 15}"
+                        th:value="@{/admin/edit-blog-posts/(page=0,size=15)}">15
+                </option>
+                <option th:selected="${page.getSize() == 20}"
+                        th:value="@{/admin/edit-blog-posts/(page=0,size=20)}">20
+                </option>
+              </select>
+              <span>places</span>
+            </div>
+          </div>
+          <div class="col-sm-9">
+            <form th:action="@{/admin/edit-blog-post/title}" th:method="get">
+              <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
+              <div class="filter-group">
+                <label>Post title</label>
+                <input type="text" class="form-control" name="title">
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <table class="table table-striped table-hover text-center">
+        <thead>
+        <tr class="row">
+          <th class="col-md-3">#</th>
+          <th class="col-md-3">Title</th>
+          <th class="col-md-3">Date Posted</th>
+          <th class="col-md-3">Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <th:block th:each="post, iter : ${posts}">
+          <tr class="row align-items-center">
+            <td class="col-md-3" th:text="${iter.index + 1}"></td>
+            <td class="col-md-3">
+              <a th:href="@{/blog/{id} (id=${post.id})}" th:text="${post.title}"></a>
+            </td>
+            <td class="col-md-3" th:text="${#temporals.format(post.datePosted, 'dd-MMM-yyyy')}"></td>
+            <td class="col-md-3">
+              <a th:href="@{/admin/edit-blog-post/{id} (id=${post.id})}" data-toggle="tooltip"
+                 class="settings" title=""
+                 data-original-title="Edit">
+                <i class="material-icons">edit</i></a>
+              <a th:href="@{/admin/edit-blog-post/delete/{id} (id=${post.id})}" data-toggle="tooltip"
+                 title="" class="delete delBtn" data-original-title="Delete">
+                <i class="material-icons">highlight_off</i></a>
+            </td>
+          </tr>
+        </th:block>
+        </tbody>
+      </table>
+      <div th:replace="fragments/pagination :: pagination (url='/admin/edit-blog-posts')"></div>
+    </div>
+  </div>
+  <th:block th:include="~{fragments/delete-modal}"></th:block>
+</th:block>

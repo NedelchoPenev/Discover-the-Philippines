@@ -36,7 +36,8 @@ public class EditPlaceValidator implements Validator {
       );
     }
 
-    if (placeBindingModel.getArticle().isEmpty()) {
+    if (placeBindingModel.getArticle().isEmpty() ||
+    placeBindingModel.getArticle().length() < 50) {
       errors.rejectValue(
         "article",
         ValidationConstants.EMPTY_ARTICLE,

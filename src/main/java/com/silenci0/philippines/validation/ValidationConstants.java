@@ -9,6 +9,8 @@ public class ValidationConstants {
 
     public final static String THINGTODO_NAME_LENGTH = "Name must be between at least 3 characters long!";
 
+    public final static String POST_TITLE_LENGTH = "Title must be between at least 5 characters long!";
+
     public final static String PLACE_INFO_LENGTH = "Info must be between 50 and 255 characters long!";
 
     public final static String THINGTODO_OVERVIEW_LENGTH = "Overall must be at least 30 characters long!";
@@ -31,7 +33,9 @@ public class ValidationConstants {
 
     public final static String EMPTY_PROVINCE = "Please, select province!";
 
-    public final static String EMPTY_ARTICLE = "Please, write the place article!";
+    public final static String EMPTY_CATEGORY = "Please, select at least one category!";
+
+    public final static String EMPTY_ARTICLE = "Please, write the place article! The Article must be at least 50 characters long";
 
     public final static String FILL_PLACE = "Please, fill one of the place fields!";
 

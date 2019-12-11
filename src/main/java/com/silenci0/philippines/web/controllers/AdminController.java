@@ -6,6 +6,7 @@ import com.silenci0.philippines.domain.models.view.*;
 import com.silenci0.philippines.service.*;
 import com.silenci0.philippines.validation.image.EditImageValidator;
 import com.silenci0.philippines.validation.place.EditPlaceValidator;
+import com.silenci0.philippines.validation.post.PostEditValidator;
 import com.silenci0.philippines.validation.thingsToDo.EditThingToDoValidator;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,31 +35,38 @@ public class AdminController extends BaseController {
   private final ThingsToDoService thingsToDoService;
   private final ImageService imageService;
   private final CategoryService categoryService;
+  private final PostService postService;
 
   private final ModelMapper modelMapper;
 
   private final EditPlaceValidator placeValidator;
   private final EditThingToDoValidator editThingToDoValidator;
   private final EditImageValidator editImageValidator;
+  private final PostEditValidator postEditValidator;
 
   @Autowired
   public AdminController(UserServiceImpl userService,
                          PlaceService placeService,
                          ThingsToDoService thingsToDoService,
                          ImageService imageService,
-                         CategoryService categoryService, ModelMapper modelMapper,
+                         CategoryService categoryService,
+                         PostService postService,
+                         ModelMapper modelMapper,
                          EditPlaceValidator placeValidator,
                          EditThingToDoValidator editThingToDoValidator,
-                         EditImageValidator editImageValidator) {
+                         EditImageValidator editImageValidator,
+                         PostEditValidator postEditValidator) {
     this.userService = userService;
     this.placeService = placeService;
     this.thingsToDoService = thingsToDoService;
     this.imageService = imageService;
     this.categoryService = categoryService;
+    this.postService = postService;
     this.modelMapper = modelMapper;
     this.placeValidator = placeValidator;
     this.editThingToDoValidator = editThingToDoValidator;
     this.editImageValidator = editImageValidator;
+    this.postEditValidator = postEditValidator;
   }
 
   @GetMapping("")
@@ -188,8 +196,8 @@ public class AdminController extends BaseController {
   @GetMapping("/edit-thing-to-do")
   @PreAuthorize("hasRole('ROLE_ADMIN')")
   public ModelAndView getEditThingToDoByName(ModelAndView modelAndView,
-                                   @RequestParam("name") String name,
-                                   @PageableDefault(size = 20) Pageable pageable) {
+                                             @RequestParam("name") String name,
+                                             @PageableDefault(size = 20) Pageable pageable) {
     Page<ThingsToDoMainImageServiceModel> pageThings = this.thingsToDoService.findByNamePageable(name, pageable);
     List<ThingsToDoViewModel> thingsToDo = pageThings.stream().map(thp -> this.modelMapper.map(thp,
       ThingsToDoViewModel.class)).collect(Collectors.toList());
@@ -201,7 +209,7 @@ public class AdminController extends BaseController {
   @GetMapping("/edit-thing-to-do/{id}")
   @PreAuthorize("hasRole('ROLE_ADMIN')")
   public ModelAndView editThingToDo(@PathVariable String id,
-                                ModelAndView modelAndView) {
+                                    ModelAndView modelAndView) {
     ThingsToDoDeleteImageServiceModel thingsToDoServiceModel = this.thingsToDoService.findByIdEdit(id);
     ThingsToDoBindingModel bindingModel =
       this.modelMapper.map(thingsToDoServiceModel, ThingsToDoBindingModel.class);
@@ -236,7 +244,7 @@ public class AdminController extends BaseController {
   @PreAuthorize("hasRole('ROLE_ADMIN')")
   @ResponseBody()
   public String deleteThingToDoImage(@RequestParam("thingToDoId") String thingToDoId,
-                                     @RequestParam("imageId") String imageId){
+                                     @RequestParam("imageId") String imageId) {
     return this.thingsToDoService.deleteImageById(thingToDoId, imageId);
   }
 
@@ -246,7 +254,7 @@ public class AdminController extends BaseController {
                                       @PageableDefault(size = 5,
                                         sort = "uploadDate",
                                         direction = Sort.Direction.DESC)
-                                        Pageable pageable){
+                                        Pageable pageable) {
     Page<AllPicturesServiceModel> pagePictures = this.imageService.findAllPageable(pageable);
     List<AllPicturesViewModel> pictures = pagePictures.stream()
       .map(place -> this.modelMapper.map(place, AllPicturesViewModel.class))
@@ -265,8 +273,9 @@ public class AdminController extends BaseController {
 
   @GetMapping("/edit-picture/{id}")
   @PreAuthorize("hasRole('ROLE_ADMIN')")
-  public ModelAndView getEditPicture(ModelAndView modelAndView, @PathVariable String id){
-    ImageEditBindingModel bindingModel = this.modelMapper.map(this.imageService.findById(id), ImageEditBindingModel.class);
+  public ModelAndView getEditPicture(ModelAndView modelAndView, @PathVariable String id) {
+    ImageEditBindingModel bindingModel = this.modelMapper.map(this.imageService.findById(id),
+      ImageEditBindingModel.class);
 
     return view("/admin/edit-picture", "bindingModel", bindingModel, modelAndView);
   }
@@ -276,8 +285,8 @@ public class AdminController extends BaseController {
   public ModelAndView postEditPicture(ModelAndView modelAndView,
                                       @PathVariable String id,
                                       @ModelAttribute("bindingModel")
-                                          ImageEditBindingModel bindingModel,
-                                      BindingResult bindingResult){
+                                        ImageEditBindingModel bindingModel,
+                                      BindingResult bindingResult) {
 
     this.editImageValidator.validate(bindingModel, bindingResult);
 
@@ -292,10 +301,10 @@ public class AdminController extends BaseController {
 
     return redirect("/admin/edit-pictures", modelAndView);
   }
-  
+
   @GetMapping("/edit-categories")
   @PreAuthorize("hasRole('ROLE_ADMIN')")
-  public ModelAndView getEditCategories(ModelAndView modelAndView, Pageable pageable){
+  public ModelAndView getEditCategories(ModelAndView modelAndView, Pageable pageable) {
     Page<CategoryServiceModel> categoriesPage = this.categoryService.findAllPageable(pageable);
     Set<CategoryViewModel> categories = categoriesPage.stream()
       .map(c -> this.modelMapper.map(c, CategoryViewModel.class))
@@ -325,13 +334,89 @@ public class AdminController extends BaseController {
   public ModelAndView postEditCategory(ModelAndView modelAndView,
                                        @ModelAttribute("category")
                                          CategoryBindingModel categoryBindingModel,
-                                       @PathVariable String id){
+                                       @PathVariable String id) {
     CategoryServiceModel serviceModel =
       this.modelMapper.map(categoryBindingModel, CategoryServiceModel.class);
 
     this.categoryService.editCategory(serviceModel, id);
 
     return redirect("/admin/edit-categories", modelAndView);
+  }
+
+  @GetMapping("/edit-blog-posts")
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
+  public ModelAndView getEditBlogPosts(ModelAndView modelAndView,
+                                       @PageableDefault(size = 5,
+                                         sort = "datePosted",
+                                         direction = Sort.Direction.DESC) Pageable pageable) {
+
+    Page<AllPostsServiceModel> postsPage = this.postService.findAllPageable(pageable);
+    List<PostsEditViewModel> posts = postsPage
+      .stream()
+      .map(p -> this.modelMapper.map(p, PostsEditViewModel.class))
+      .collect(Collectors.toList());
+
+    modelAndView.addObject("page", postsPage);
+    return view("admin/edit-blog-posts", "posts", posts, modelAndView);
+  }
+
+  @GetMapping("/edit-blog-post/title")
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
+  public ModelAndView getEditBlogPostByTitle(ModelAndView modelAndView,
+                                             @RequestParam("title") String title,
+                                             @PageableDefault(size = 20,
+                                               sort = "datePosted",
+                                               direction = Sort.Direction.DESC) Pageable pageable) {
+
+    Page<AllPostsServiceModel> postsPage = this.postService.findByTitlePageable(title, pageable);
+    List<PostsEditViewModel> posts = postsPage
+      .stream()
+      .map(p -> this.modelMapper.map(p, PostsEditViewModel.class))
+      .collect(Collectors.toList());
+
+    modelAndView.addObject("page", postsPage);
+    return view("admin/edit-blog-posts", "posts", posts, modelAndView);
+  }
+
+  @GetMapping("/edit-blog-post/delete/{id}")
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
+  public ModelAndView getDeleteBlogPost(ModelAndView modelAndView, @PathVariable String id) {
+    this.postService.deleteById(id);
+
+    return redirect("/admin/edit-blog-posts", modelAndView);
+  }
+
+  @GetMapping("/edit-blog-post/{id}")
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
+  public ModelAndView getEditBlogPost(ModelAndView modelAndView,
+                                      @PathVariable String id) {
+    PostEditServiceModel serviceModel = this.postService.findByIdEdit(id);
+    PostEditBindingModel post = this.modelMapper.map(serviceModel, PostEditBindingModel.class);
+
+    modelAndView.addObject("categories", post.getCategories());
+    return view("/admin/edit-blog-post", "bindingModel", post, modelAndView);
+  }
+
+  @PostMapping("/edit-blog-post/{id}")
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
+  public ModelAndView postEditBlogPost(ModelAndView modelAndView,
+                                       @PathVariable String id,
+                                       @ModelAttribute("bindingModel")
+                                           PostEditBindingModel bindingModel,
+                                       Principal principal,
+                                       BindingResult bindingResult) throws IOException {
+
+    this.postEditValidator.validate(bindingModel, bindingResult);
+
+    if (bindingResult.hasErrors()) {
+      return view("admin/edit-blog-post", "bindingModel", bindingModel, modelAndView);
+    }
+
+    this.modelMapper.map(bindingModel, PostEditServiceModel.class);
+
+    this.postService.editPost(id, bindingModel, principal.getName());
+
+    return redirect("/blog/" + id, modelAndView);
   }
 
   private ModelAndView mapUserAndAuthorities(ModelAndView modelAndView, Page<UsersPageServiceModel> pageUsers) {

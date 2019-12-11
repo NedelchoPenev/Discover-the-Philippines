@@ -1,6 +1,7 @@
 package com.silenci0.philippines.domain.entities;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -22,6 +23,7 @@ public class Post extends BaseEntity{
   }
 
   @Column(nullable = false)
+  @Size(min = 5)
   public String getTitle() {
     return title;
   }
@@ -39,7 +41,7 @@ public class Post extends BaseEntity{
     this.headerImage = headerImage;
   }
 
-  @ManyToMany(targetEntity = PostCategory.class, cascade = CascadeType.ALL)
+  @ManyToMany(targetEntity = PostCategory.class)
   @JoinTable(
     name = "posts_categories",
     joinColumns = @JoinColumn(
@@ -87,6 +89,7 @@ public class Post extends BaseEntity{
   }
 
   @Column(nullable = false, columnDefinition = "TEXT")
+  @Size(min = 50)
   public String getArticle() {
     return article;
   }
@@ -95,7 +98,7 @@ public class Post extends BaseEntity{
     this.article = article;
   }
 
-  @OneToMany(targetEntity = Comment.class, cascade = CascadeType.ALL)
+  @OneToMany(fetch=FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
   public Set<Comment> getComments() {
     return comments;
   }

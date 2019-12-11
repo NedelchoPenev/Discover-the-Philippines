@@ -2,6 +2,7 @@ package com.silenci0.philippines.domain.entities;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -14,6 +15,7 @@ public class ThingsToDo extends BaseEntity {
   private String province;
   private String overview;
   private String externalLink;
+  private LocalDateTime dateAdded;
 
   public ThingsToDo() {
   }
@@ -76,5 +78,13 @@ public class ThingsToDo extends BaseEntity {
 
   public void setExternalLink(String externalLink) {
     this.externalLink = externalLink;
+  }
+
+  public LocalDateTime getDateAdded() {
+    return dateAdded;
+  }
+
+  public void setDateAdded(LocalDateTime dateAdded) {
+    this.dateAdded = dateAdded;
   }
 }

@@ -12,13 +12,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/category")
-public class CategoryController extends BaseController{
+public class CategoryController extends BaseController {
+
   private final CategoryService categoryService;
   private final ModelMapper modelMapper;
 
@@ -32,18 +34,25 @@ public class CategoryController extends BaseController{
   @PreAuthorize("hasRole('ROLE_CREATOR')")
   public ModelAndView addCategory(ModelAndView modelAndView,
                                   @ModelAttribute()
-                                    CategoryBindingModel categoryBindingModel){
+                                    CategoryBindingModel categoryBindingModel,
+                                  HttpServletRequest request) {
+
     CategoryServiceModel serviceModel =
       this.modelMapper.map(categoryBindingModel, CategoryServiceModel.class);
 
     this.categoryService.addCategory(serviceModel);
 
-    return redirect("/creators/add-blog-post", modelAndView);
+    String referrer = request.getHeader("referer");
+    String id = referrer.substring(referrer.lastIndexOf("/")+1);
+
+    return referrer.contains("/creators/add-blog-post") ?
+      redirect("/creators/add-blog-post", modelAndView) :
+      redirect("/admin/edit-blog-post/" + id, modelAndView);
   }
 
   @GetMapping("fetch/all")
   @ResponseBody()
-  public Set<CategoryViewModel> fetchCategories(){
+  public Set<CategoryViewModel> fetchCategories() {
     return this.categoryService.findAll()
       .stream()
       .map(c -> this.modelMapper.map(c, CategoryViewModel.class))
@@ -52,7 +61,7 @@ public class CategoryController extends BaseController{
 
   @GetMapping("fetch/top")
   @ResponseBody()
-  public List<CategoryTopViewModel> fetchTopCategories(){
+  public List<CategoryTopViewModel> fetchTopCategories() {
     return this.categoryService.findTopCategories()
       .stream()
       .map(c -> this.modelMapper.map(c, CategoryTopViewModel.class))

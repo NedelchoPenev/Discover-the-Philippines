@@ -2,6 +2,7 @@ package com.silenci0.philippines.domain.entities;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "place")
@@ -14,6 +15,7 @@ public class Place extends BaseEntity {
   private String placeHotels;
   private String placeOnMap;
   private String article;
+  private LocalDateTime dateAdded;
 
   public Place() {
   }
@@ -75,11 +77,20 @@ public class Place extends BaseEntity {
   }
 
   @Column(length = 65535, columnDefinition="Text", nullable = false)
+  @Size(min = 50)
   public String getArticle() {
     return article;
   }
 
   public void setArticle(String article) {
     this.article = article;
+  }
+
+  public LocalDateTime getDateAdded() {
+    return dateAdded;
+  }
+
+  public void setDateAdded(LocalDateTime dateAdded) {
+    this.dateAdded = dateAdded;
   }
 }

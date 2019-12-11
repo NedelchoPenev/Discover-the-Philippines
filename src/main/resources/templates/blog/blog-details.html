@@ -13,7 +13,7 @@
                 <a th:href="@{/blog/category/{id} (id = ${category.id})}"
                    th:each="category, iter : ${post.categories}">
                 <span class="mr-0" th:text="${category.name}">
-                </span><span th:if="(${iter.index} == ${#lists.size(post.comments)})">,</span>
+                </span><span th:if="(${iter.index + 1} != ${#lists.size(post.categories)})">,</span>
                 </a>
               </li>
               <li><a href="#"><i class="far fa-comments"></i>
@@ -36,7 +36,7 @@
             </a>
             <span class="align-middle">
                   <span sec:authorize="isAuthenticated()" th:if="${!isLikeable}">You and</span>
-                  <span th:text="${#sets.size(post.likes)}"></span> people like this</span>
+                  <span th:text="${#sets.size(post.likes)}"></span> likes</span>
             <div class="col-sm-6 text-center my-2 my-sm-0">
             </div>
             <ul class="social-icons">

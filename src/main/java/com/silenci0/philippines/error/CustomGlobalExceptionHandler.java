@@ -24,8 +24,9 @@ public class CustomGlobalExceptionHandler {
   public ModelAndView handleAccessDeniedException(AccessDeniedException exc, Principal principal) {
 
     ModelAndView modelAndView = new ModelAndView("redirect:" + "/");
-
-//    modelAndView.addObject("view", "error/image-size-error");
+    if (principal == null){
+      modelAndView.addObject("showLoginModal", true);
+    }
 
     return modelAndView;
   }

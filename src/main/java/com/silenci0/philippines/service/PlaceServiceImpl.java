@@ -44,6 +44,7 @@ public class PlaceServiceImpl implements PlaceService {
   public void savePlace(PlaceServiceModel placeServiceModel, Principal principal) throws IOException {
     Place place = this.modelMapper.map(placeServiceModel, Place.class);
     mapImage(placeServiceModel, principal, place);
+    place.setDateAdded(LocalDateTime.now());
     this.placeRepository.saveAndFlush(place);
   }
 
@@ -53,6 +54,16 @@ public class PlaceServiceImpl implements PlaceService {
         .stream()
         .map(place -> this.modelMapper.map(place, AllPlacesServiceModel.class))
         .collect(Collectors.toList());
+  }
+
+  @Override
+  public List<AllPlacesServiceModel> findNewestTakeFour() {
+    return this.placeRepository.findAll()
+      .stream()
+      .sorted((p1, p2) -> p2.getDateAdded().compareTo(p1.getDateAdded()))
+      .map(place -> this.modelMapper.map(place, AllPlacesServiceModel.class))
+      .limit(4)
+      .collect(Collectors.toList());
   }
 
   @Override

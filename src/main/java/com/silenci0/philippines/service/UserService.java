@@ -1,5 +1,6 @@
 package com.silenci0.philippines.service;
 
+import com.silenci0.philippines.domain.models.service.UserAboutServiceModel;
 import com.silenci0.philippines.domain.models.service.UserEditServiceModel;
 import com.silenci0.philippines.domain.models.service.UserServiceModel;
 import com.silenci0.philippines.domain.models.service.UsersPageServiceModel;
@@ -8,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.security.Principal;
+import java.util.List;
 
 public interface UserService extends UserDetailsService {
 
@@ -26,4 +28,6 @@ public interface UserService extends UserDetailsService {
   void deleteById(String id);
 
   void setUserRole(String id, String role);
+
+  List<UserAboutServiceModel> findCreators();
 }

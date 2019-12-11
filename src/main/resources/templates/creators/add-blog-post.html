@@ -8,6 +8,7 @@
           <div class="mt-3">
             <h3>Title</h3>
             <input type="text" class="form-control" name="title" th:value="*{title}"
+                   th:classappend="${#fields.hasErrors('title')} ? 'is-invalid'"
                    placeholder="Enter Title...">
             <th:block th:if="${#fields.hasErrors('title')}">
               <small class="text-danger" th:errors="*{title}"></small>
@@ -28,12 +29,15 @@
           </div>
           <div class="mt-3">
             <h3>Select Categories</h3>
-            <select multiple="" class="form-control" id="add-categories" name="categories">
-              <option selected="" disabled="">--- Select Categories ---</option>
+            <select class="selectpicker form-control" multiple data-live-search="true"
+                    th:classappend="${#fields.hasErrors('categories')} ? 'is-invalid'"
+                    id="add-categories" name="categories">
             </select>
             <th:block th:if="${#fields.hasErrors('categories')}">
               <small class="text-danger" th:errors="*{categories}"></small>
             </th:block>
+          </div>
+          <div class="mt-3">
             <button type="button" class="btn btn-primary mt-3"
                     data-toggle="modal" data-target="#addCategoryModal">
               Add new Category
@@ -58,26 +62,7 @@
     </form>
   </div>
 </div>
-<div class="modal fade" id="addCategoryModal" tabindex="-1" role="dialog"
-     aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">Add new Category</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <form th:action="@{/category/add-category}" method="POST">
-        <div class="modal-body">
-          <input type="text" class="form-control" name="name" id="category"
-                 placeholder="Add new Category if not in the list above...">
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="submit" class="btn btn-primary">Add</button>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
+<th:block th:include="~{fragments/add-category}"></th:block>
+<script th:inline="javascript">
+  var categories = [[${categories}]]
+</script>

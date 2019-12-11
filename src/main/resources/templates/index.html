@@ -38,83 +38,14 @@
 				</div>
 			</div>
 			<div class="row">
-				<div class="col-lg-6 col-md-6">
+				<div class="col-lg-6 col-md-6" th:each="place : ${places}">
 					<div class="single_place">
-						<img src="img/ezgif.com-gif-maker.webp" alt="">
+						<img class="img-fluid img-home" th:src="${place.headerImageUrl}" alt="">
 						<div class="hover_Text d-flex align-items-end justify-content-between">
 							<div class="hover_text_iner">
-								<a href="#" class="place_btn">discover</a>
-								<h3>Bohol</h3>
-								<p>Chocolate Hills</p>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col-lg-6 col-md-6">
-					<div class="single_place">
-						<img src="img/laurentiu-morariu-NR-2_RIb62k-unsplash.webp" alt="">
-						<div class="hover_Text d-flex align-items-end justify-content-between">
-							<div class="hover_text_iner">
-								<a href="#" class="place_btn">discover</a>
-								<h3>Boracay</h3>
-								<p>White Beach</p>
-								<div class="place_review">
-									<a href="#"><i class="fas fa-star"></i></a>
-									<a href="#"><i class="fas fa-star"></i></a>
-									<a href="#"><i class="fas fa-star"></i></a>
-									<a href="#"><i class="fas fa-star"></i></a>
-									<a href="#"><i class="fas fa-star"></i></a>
-									<span>(210 review)</span>
-								</div>
-							</div>
-							<div class="details_icon text-right">
-								<i class="ti-share"></i>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col-lg-6 col-md-6">
-					<div class="single_place">
-						<img src="img/alejandro-luengo-h1dEzlP12hs-unsplash.webp" alt="">
-						<div class="hover_Text d-flex align-items-end justify-content-between">
-							<div class="hover_text_iner">
-								<a href="#" class="place_btn">discover</a>
-								<h3>El Nido</h3>
-								<p>Twin Peaks</p>
-								<div class="place_review">
-									<a href="#"><i class="fas fa-star"></i></a>
-									<a href="#"><i class="fas fa-star"></i></a>
-									<a href="#"><i class="fas fa-star"></i></a>
-									<a href="#"><i class="fas fa-star"></i></a>
-									<a href="#"><i class="fas fa-star"></i></a>
-									<span>(210 review)</span>
-								</div>
-							</div>
-							<div class="details_icon text-right">
-								<i class="ti-share"></i>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col-lg-6 col-md-6">
-					<div class="single_place">
-						<img src="img/fritz-gabriel-carilo-fulyk6dVFSQ-unsplash.webp" alt="">
-						<div class="hover_Text d-flex align-items-end justify-content-between">
-							<div class="hover_text_iner">
-								<a href="#" class="place_btn">discover</a>
-								<h3>Cebu City</h3>
-								<p>Ayala Mall</p>
-								<div class="place_review">
-									<a href="#"><i class="fas fa-star"></i></a>
-									<a href="#"><i class="fas fa-star"></i></a>
-									<a href="#"><i class="fas fa-star"></i></a>
-									<a href="#"><i class="fas fa-star"></i></a>
-									<a href="#"><i class="fas fa-star"></i></a>
-									<span>(210 review)</span>
-								</div>
-							</div>
-							<div class="details_icon text-right">
-								<i class="ti-share"></i>
+								<a th:href="@{/places/details/{id} (id = ${place.id})}" class="place_btn">discover</a>
+								<h3 th:text="${place.name}"></h3>
+								<p th:text="${place.province}"></p>
 							</div>
 						</div>
 					</div>
@@ -136,41 +67,16 @@
 			</div>
 		</div>
 		<div class="rooms-slides owl-carousel">
-			<div class="single-room-slide d-flex align-items-center">
-				<div class="room-thumbnail h-100 bg-img" style="background-image: url(img/37.jpg);"></div>
+			<div class="single-room-slide d-flex align-items-center" th:each="thingToDo : ${thingsToDo}">
+				<div class="room-thumbnail h-100 bg-img" th:style="'background-image: url('+ ${thingToDo.mainImageUrl} +');'"></div>
 
 				<div class="room-content">
-					<h2 data-animation="fadeInUp" data-delay="100ms">Whale Shark Encounter</h2>
-					<h3 data-animation="fadeInUp" data-delay="300ms">46€</h3>
-					<ul class="room-feature" data-animation="fadeInUp" data-delay="500ms">
-						<li><span><i class="fa fa-check"></i> Duration</span> <span>: 30 days</span></li>
-						<li><span><i class="fa fa-check"></i> Destinations</span> <span>: Manila, Cebu, Bohol,
-								Boracay</span>
-						</li>
-						<li><span><i class="fa fa-check"></i> Description</span> <span>: Our best package</span>
-						</li>
-					</ul>
-					<a href="#" class="button mt-30" data-animation="fadeInUp" data-delay="700ms">View
-						Details</a>
-				</div>
-			</div>
-
-			<div class="single-room-slide d-flex align-items-center">
-				<div class="room-thumbnail h-100 bg-img"
-					style="background-image: url(img/PuertoPrincesaUndergroundRiverDayTour.jpg);"></div>
-
-				<div class="room-content">
-					<h2 data-animation="fadeInUp" data-delay="100ms">Ocean Lovers</h2>
-					<h3 data-animation="fadeInUp" data-delay="300ms">120€ <span>/ Day</span></h3>
-					<ul class="room-feature" data-animation="fadeInUp" data-delay="500ms">
-						<li><span><i class="fa fa-check"></i> Duration</span> <span>: 15 days</span></li>
-						<li><span><i class="fa fa-check"></i> Destinations</span> <span>: Bohol, Boracay, Puerto
-								Princesa</span></li>
-						<li><span><i class="fa fa-check"></i> Description</span> <span>: If you love the
-								water.</span>
-						</li>
-					</ul>
-					<a href="#" class="button mt-30" data-animation="fadeInUp" data-delay="700ms">View
+					<h2 data-animation="fadeInUp" data-delay="100ms" th:text="${thingToDo.name}"></h2>
+					<h3 data-animation="fadeInUp" data-delay="300ms" th:text="${thingToDo.province}"></h3>
+					<p class="room-feature" data-animation="fadeInUp" data-delay="500ms"
+						 th:text="${#strings.abbreviate(thingToDo.overview, 80)}"></p>
+					<a th:href="@{/things-to-do/details/{id} (id = ${thingToDo.id})}"
+						 class="button mt-30" data-animation="fadeInUp" data-delay="700ms">View
 						Details</a>
 				</div>
 			</div>
@@ -180,7 +86,6 @@
 	<section class="m-5" data-aos="fade-up" data-aos-easing="ease-in-out" data-aos-duration="600">
 		<div class="container">
 			<div class="row justify-content-center">
-				<!-- Section Heading -->
 				<div class="col-xl-6">
 					<div class="section_tittle text-center">
 						<h2>Latest from Our Blog</h2>
@@ -189,60 +94,27 @@
 			</div>
 
 			<div class="row">
-				<!-- Single Post Area -->
-				<div class="col-12 col-md-6 col-lg-4">
+				<div class="col-12 col-md-6 col-lg-4" th:each="post : ${posts}">
 					<div class="single-post-area mb-100">
-						<a href="#" class="post-thumbnail"><img src="img/bg-img/2.jpg" alt=""></a>
-						<!-- Post Meta -->
+						<a th:href="@{/blog/{id} (id = ${post.id})}"
+							 class="post-thumbnail">
+							<img class="img-fluid img-home-post"
+									 th:src="${post.headerImageUrl}" alt="missing image"></a>
 						<div class="post-meta">
-							<a href="#" class="post-date">Jan 02, 2019</a>
-							<a href="#" class="post-catagory">Event</a>
+							<div class="post-date"
+								 th:text="${#temporals.format(post.datePosted, 'dd-MMM-yyyy')}"></div>
+							<a th:href="@{/blog/category/{id} (id = ${category.id})}"
+								 th:each="category, iter : ${post.categories}">
+                <span class="mr-0" th:text="${category.name}">
+                </span><span th:if="(${iter.index + 1} != ${#lists.size(post.categories)})">,</span>
+							</a>
 						</div>
-						<!-- Post Title -->
-						<a href="#" class="post-title">Learn How To Motivate Yourself</a>
-						<p>How many free autoresponders have you tried? And how many emails did you get through
-							using
-							them?</p>
-						<a href="index.html" class="btn continue-btn"><i class="fas fa-arrow-right"></i></a>
-					</div>
-				</div>
-
-				<!-- Single Post Area -->
-				<div class="col-12 col-md-6 col-lg-4">
-					<div class="single-post-area mb-100">
-						<a href="#" class="post-thumbnail"><img src="img/bg-img/3.jpg" alt=""></a>
-						<!-- Post Meta -->
-						<div class="post-meta">
-							<a href="#" class="post-date">Jan 02, 2019</a>
-							<a href="#" class="post-catagory">Event</a>
-						</div>
-						<!-- Post Title -->
-						<a href="#" class="post-title">What If Let You Run The Hubble</a>
-						<p>My point here is that if you have no clue for the answers above you probably are not
-							operating a followup.</p>
-						<a href="index.html" class="btn continue-btn"><i class="fas fa-arrow-right"></i></a>
-					</div>
-				</div>
-
-				<!-- Single Post Area -->
-				<div class="col-12 col-md-6 col-lg-4">
-					<div class="single-post-area mb-100">
-						<a href="#" class="post-thumbnail"><img src="img/bg-img/4.jpg" alt=""></a>
-						<!-- Post Meta -->
-						<div class="post-meta">
-							<a href="#" class="post-date">Jan 02, 2019</a>
-							<a href="#" class="post-catagory">Event</a>
-						</div>
-						<!-- Post Title -->
-						<a href="#" class="post-title">Six Pack Abs The Big Picture</a>
-						<p>Some good steps to take to ensure you are getting what you need out of a
-							autoresponder
-							include…</p>
-						<a href="" class="btn continue-btn">
+						<a th:href="@{/blog/{id} (id = ${post.id})}" class="post-title" th:text="${post.title}"></a>
+						<p th:text="${#strings.abbreviate(post.article, 140)}"></p>
+						<a th:href="@{/blog/{id} (id = ${post.id})}" class="btn continue-btn mb-1">
 							<i class="fas fa-arrow-right"></i></a>
 					</div>
 				</div>
-
 			</div>
 		</div>
 	</section>

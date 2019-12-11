@@ -40,7 +40,9 @@ $(document).ready(function () {
         });
       })
     }
-  })
+  });
+
+  $('.selectpicker').selectpicker();
 });
 
 AOS.init({
@@ -163,13 +165,18 @@ $(function () {
 
 $(function () {
   if ($('.container-fluid').is($('#add-block-post'))) {
+    console.log(categories);
     fetch('/category/fetch/all')
       .then((response) => response.json())
       .then((json) => {
         json.forEach((category) => $('#add-categories')
           .append(`<option value="${category.id}">${category.name}</option>`));
-      })
-      .catch((err) => console.log(err));
+      }).then(() => {
+      if (categories) {
+        $('.selectpicker').val(categories);
+      }
+      $('.selectpicker').selectpicker("refresh");
+    }).catch((err) => console.log(err));
   }
 });
 

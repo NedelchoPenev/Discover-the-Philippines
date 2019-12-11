@@ -440,7 +440,6 @@ p {
   font-size: 16px;
   margin-bottom: 0px;
   font-weight: 400;
-  overflow-wrap: break-word;
 }
 
 h2 {
@@ -841,7 +840,7 @@ ul {
   height: 800px;
   position: relative;
   overflow: hidden;
-  background-image: url(../img/cris-tagupa-9ZXHUr5aCwM-unsplash.webp);
+  background-image: url(https://res.cloudinary.com/duddzgxsd/image/upload/v1575974707/important/cris-tagupa-9ZXHUr5aCwM-unsplash.webp);
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
@@ -1010,7 +1009,7 @@ ul {
 .single-room-slide {
   position: relative;
   z-index: 1;
-  height: 600px;
+  height: 500px;
   background-color: #2493e0;
   -ms-flex-wrap: wrap;
   flex-wrap: wrap;
@@ -1018,7 +1017,7 @@ ul {
 
 @media only screen and (min-width: 992px) and (max-width: 1199px) {
   .single-room-slide {
-    height: 500px;
+    height: 400px;
   }
 }
 
@@ -1060,11 +1059,13 @@ ul {
   max-width: 50%;
   width: 50%;
   padding-left: 80px;
+  padding-right: 50px;
 }
 
 @media only screen and (min-width: 992px) and (max-width: 1199px) {
   .single-room-slide .room-content {
     padding-left: 50px;
+    padding-right: 40px;
   }
 }
 
@@ -1151,17 +1152,9 @@ ul {
   position: relative;
   z-index: 1;
   margin-bottom: 30px;
-}
-
-.single-room-slide .room-content .room-feature li {
-  color: #fff;
-  display: block;
-  margin-bottom: 15px;
-}
-
-.single-room-slide .room-content .room-feature li span {
-  min-width: 110px;
-  display: inline-block;
+  overflow-wrap: break-word;
+  color: whitesmoke;
+  white-space: pre-line;
 }
 
 @media only screen and (min-width: 576px) and (max-width: 767px) {
@@ -1364,14 +1357,13 @@ ul {
   font-size: 14px;
   color: #afb4bf;
   display: inline-block;
-  margin-right: 30px;
+  margin-right: 5px;
   text-transform: uppercase;
   letter-spacing: 1px;
 }
 
 .single-post-area .post-meta a:last-child {
   margin-right: 0;
-  color: #2493e0;
 }
 
 .single-post-area .post-meta a:hover,
@@ -1392,7 +1384,7 @@ ul {
 }
 
 .single-post-area p {
-  margin-bottom: 15px;
+  margin-bottom: 5px;
 }
 
 .single-post-area:hover,
@@ -4130,7 +4122,7 @@ table.table .avatar {
 }
 
 .selected {
-  outline:3px solid #2493e0;
+  outline: 3px solid #2493e0;
 }
 
 .image-checkbox {
@@ -4146,23 +4138,23 @@ table.table .avatar {
   right: 0;
 }
 
-.carousel-item > img{
+.carousel-item > img {
   height: 450px;
 }
 
 @media only screen and (min-width: 768px) and (max-width: 1100px) {
-  .carousel-item > img{
+  .carousel-item > img {
     height: 350px;
   }
 }
 
 @media only screen and (min-width: 200px) and (max-width: 767px) {
-  .carousel-item > img{
+  .carousel-item > img {
     height: 250px;
   }
 }
 
-.card-img{
+.card-img {
   max-height: 450px;
 }
 
@@ -4202,7 +4194,7 @@ table.table .avatar {
   -webkit-transform: translateX(-50%);
   -ms-transform: translateX(-50%);
   transform: translateX(-50%);
-  background: url('https://res.cloudinary.com/duddzgxsd/image/upload/v1575898811/bg.jpg') no-repeat;
+  background: url('https://res.cloudinary.com/duddzgxsd/image/upload/v1575974707/cris-tagupa-9ZXHUr5aCwM-unsplash.webp') no-repeat;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-size: cover;
@@ -4247,7 +4239,41 @@ table.table .avatar {
   .notfound .notfound-404 {
     height: 142px;
   }
+
   .notfound .notfound-404 h1 {
     font-size: 112px;
   }
 }
+
+.box-image-about{
+  height: 250px;
+  width: auto;
+  overflow: hidden;
+}
+
+.img-home {
+  height: 400px;
+  /*object-fit: cover;*/
+}
+
+.img-home-post {
+  height: 250px;
+  /*object-fit: cover;*/
+}
+
+@media only screen and (min-width: 767px) and (max-width: 1100px) {
+  .img-home {
+    height: 300px;
+  }
+
+  .img-home-post {
+    height: 200px;
+  }
+}
+
+@media only screen and (max-width: 767px) {
+  .box-image-about{
+    height: auto;
+  }
+}
+

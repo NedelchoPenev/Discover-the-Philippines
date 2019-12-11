@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
-@RequestMapping("error")
+@RequestMapping("/error")
 public class CustomErrorController extends AbstractErrorController {
   private final ErrorProperties errorProperties;
 

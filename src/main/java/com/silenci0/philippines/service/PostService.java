@@ -1,9 +1,7 @@
 package com.silenci0.philippines.service;
 
-import com.silenci0.philippines.domain.models.service.AllPostsServiceModel;
-import com.silenci0.philippines.domain.models.service.PostAddServiceModel;
-import com.silenci0.philippines.domain.models.service.PostServiceModel;
-import com.silenci0.philippines.domain.models.service.TopPostServiceModel;
+import com.silenci0.philippines.domain.models.binding.PostEditBindingModel;
+import com.silenci0.philippines.domain.models.service.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -28,4 +26,14 @@ public interface PostService {
   void addLikeToPost(String postId, String likerUsername);
 
   void addCommentToPost(String postId, String comment, String username);
+
+  List<PostServiceModel> findNewestTakeFour();
+
+  Page<AllPostsServiceModel> findByTitlePageable(String title, Pageable pageable);
+
+  void deleteById(String id);
+
+  PostEditServiceModel findByIdEdit(String id);
+
+  void editPost(String id, PostEditBindingModel bindingModel, String name) throws IOException;
 }

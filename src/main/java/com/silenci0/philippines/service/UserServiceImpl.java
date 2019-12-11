@@ -2,6 +2,7 @@ package com.silenci0.philippines.service;
 
 import com.silenci0.philippines.domain.entities.Role;
 import com.silenci0.philippines.domain.entities.User;
+import com.silenci0.philippines.domain.models.service.UserAboutServiceModel;
 import com.silenci0.philippines.domain.models.service.UserEditServiceModel;
 import com.silenci0.philippines.domain.models.service.UserServiceModel;
 import com.silenci0.philippines.domain.models.service.UsersPageServiceModel;
@@ -20,7 +21,9 @@ import org.springframework.stereotype.Service;
 import java.security.Principal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -30,16 +33,16 @@ public class UserServiceImpl implements UserService, ApplicationListener<Authent
   private static final String USERNAME_NOT_FOUND = "Username not found!";
   private static final String INCORRECT_PASSWORD = "Incorrect password!";
   private static final String INCORRECT_ID = "Incorrect id!";
-  private static final String DEFAULT_PROFILE_PICTURE = "https://res.cloudinary" +
-    ".com/duddzgxsd/image/upload/v1534965846" +
-    "/j418yffqf62ps0umrr7l.png";
+  private static final String DEFAULT_PROFILE_PICTURE = "https://res.cloudinary.com/duddzgxsd/image/upload/v1534965846/important/j418yffqf62ps0umrr7l.png";
   private final UserRepository userRepository;
   private final RoleService roleService;
   private final ModelMapper modelMapper;
   private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
   @Autowired
-  public UserServiceImpl(UserRepository userRepository, RoleService roleService, ModelMapper modelMapper,
+  public UserServiceImpl(UserRepository userRepository,
+                         RoleService roleService,
+                         ModelMapper modelMapper,
                          BCryptPasswordEncoder bCryptPasswordEncoder) {
     this.userRepository = userRepository;
     this.roleService = roleService;
@@ -121,6 +124,16 @@ public class UserServiceImpl implements UserService, ApplicationListener<Authent
     return this.userRepository
       .findDistinctByUsernameStartingWithAndUsernameNot(username, usernameNot, pageable)
       .map(user -> this.modelMapper.map(user, UsersPageServiceModel.class));
+  }
+
+  @Override
+  public List<UserAboutServiceModel> findCreators() {
+    Role roleCreator = this.roleService.findByAuthorityReturnRole("ROLE_CREATOR");
+    return this.userRepository.findAllByAuthorities(roleCreator)
+      .stream()
+      .sorted(Comparator.comparing(User::getRegistrationDate))
+      .map(u -> this.modelMapper.map(u, UserAboutServiceModel.class))
+      .collect(Collectors.toList());
   }
 
   @Override

@@ -14,6 +14,7 @@ import com.silenci0.philippines.service.PostService;
 import com.silenci0.philippines.service.ThingsToDoService;
 import com.silenci0.philippines.validation.image.AddImageValidator;
 import com.silenci0.philippines.validation.place.AddPlaceValidator;
+import com.silenci0.philippines.validation.post.PostAddValidator;
 import com.silenci0.philippines.validation.thingsToDo.AddThingToDoValidator;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +44,7 @@ public class CreatorsController extends BaseController {
   private final AddPlaceValidator placeValidator;
   private final AddThingToDoValidator addThingToDoValidator;
   private final AddImageValidator addImageValidator;
+  private final PostAddValidator postAddValidator;
 
   @Autowired
   public CreatorsController(PlaceService placeService,
@@ -51,7 +53,8 @@ public class CreatorsController extends BaseController {
                             PostService postService, ModelMapper modelMapper,
                             AddPlaceValidator placeValidator,
                             AddThingToDoValidator addThingToDoValidator,
-                            AddImageValidator addImageValidator) {
+                            AddImageValidator addImageValidator,
+                            PostAddValidator postAddValidator) {
     this.placeService = placeService;
     this.thingsToDoService = thingsToDoService;
     this.imageService = imageService;
@@ -60,6 +63,7 @@ public class CreatorsController extends BaseController {
     this.placeValidator = placeValidator;
     this.addThingToDoValidator = addThingToDoValidator;
     this.addImageValidator = addImageValidator;
+    this.postAddValidator = postAddValidator;
   }
 
   @GetMapping("")
@@ -73,6 +77,7 @@ public class CreatorsController extends BaseController {
   public ModelAndView getBlogPost(ModelAndView modelAndView,
                                   @ModelAttribute("bindingModel") PostBindingModel postBindingModel) {
 
+    modelAndView.addObject("categories", null);
     return view("creators/add-blog-post", modelAndView);
   }
 
@@ -81,13 +86,15 @@ public class CreatorsController extends BaseController {
   public ModelAndView postBlogPost(ModelAndView modelAndView,
                                    Principal principal,
                                   @ModelAttribute("bindingModel")
-                                     PostBindingModel bindingModel) throws IOException {
+                                     PostBindingModel bindingModel,
+                                   BindingResult bindingResult) throws IOException {
 
-//    this.placeValidator.validate(bindingModel, bindingResult);
-//
-//    if (bindingResult.hasErrors()) {
-//      return view("creators/add-place", "bindingModel", bindingModel, modelAndView);
-//    }
+    this.postAddValidator.validate(bindingModel, bindingResult);
+
+    if (bindingResult.hasErrors()) {
+      return view("creators/add-blog-post", "bindingModel", bindingModel, modelAndView);
+    }
+
     PostAddServiceModel serviceModel = this.modelMapper.map(bindingModel, PostAddServiceModel.class);
     this.postService.savePost(serviceModel, principal);
 

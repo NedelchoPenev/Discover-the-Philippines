@@ -65,11 +65,12 @@ public class AddPlaceValidator implements Validator {
       );
     }
 
-    if (placeBindingModel.getArticle().isEmpty()) {
+    if (placeBindingModel.getArticle().isEmpty() ||
+      placeBindingModel.getArticle().length() < 50) {
       errors.rejectValue(
-          "article",
-          ValidationConstants.EMPTY_ARTICLE,
-          ValidationConstants.EMPTY_ARTICLE
+        "article",
+        ValidationConstants.EMPTY_ARTICLE,
+        ValidationConstants.EMPTY_ARTICLE
       );
     }
 

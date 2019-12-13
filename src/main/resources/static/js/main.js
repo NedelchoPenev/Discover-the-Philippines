@@ -52,20 +52,32 @@ AOS.init({
 });
 
 $('#summernote').summernote({
+  toolbar: [
+    ['style', ['style']],
+    ['font', ['bold', 'underline', 'clear']],
+    ['fontname', ['fontname']],
+    ['fontsize', ['fontsize']],
+    ['height', ['height']],
+    ['color', ['color']],
+    ['para', ['ul', 'ol', 'paragraph']],
+    ['table', ['table']],
+    ['insert', ['link', 'picture', 'video']],
+    ['view', ['fullscreen', 'codeview', 'help', 'undo', 'redo']],
+  ],
   tabsize: 2,
   height: 300
 });
 
-$('.table .delBtn').on('click', function (event) {
+$('.table .delBtn, .delete-comment').on('click', function (event) {
   event.preventDefault();
-  var href = $(this).attr('href');
+  let href = $(this).attr('href');
   $('#deleteModal #delRef').attr('href', href);
   $('#deleteModal').modal();
 });
 
 $('.table .roleBtn').on('click', function (event) {
   event.preventDefault();
-  var href = $(this).attr('href');
+  let href = $(this).attr('href');
   $('#setRoleModal form').attr('action', href);
 });
 
@@ -250,3 +262,30 @@ $(function () {
 });
 
 $("time.timeago").timeago();
+
+$(".like-login").on("click", function () {
+  $(this).notify("Please, Login to Like", 'error');
+});
+
+// if (($("#login-success-notify").length)){
+//   $.notify.addStyle('welcome', {
+//     html: "<div><span data-notify-text/></div>",
+//     classes: {
+//       base: {
+//         "white-space": "nowrap",
+//         "color": "#468847",
+//         "background-color": "#DFF0D8",
+//         "border-color": "#D6E9C6",
+//         "border": "1px solid #fbeed5",
+//         "border-radius": "4px",
+//         "font-weight": "bold",
+//         "padding": "15px",
+//         "font-size": "30px"
+//       }
+//     }
+//   });
+//
+//   let username = $("#login-success-notify").text();
+//   $.notify(`Welcome back, ${username}!`, {position: 'top center', style: 'welcome'});
+//   $("#login-success-notify").remove();
+// }

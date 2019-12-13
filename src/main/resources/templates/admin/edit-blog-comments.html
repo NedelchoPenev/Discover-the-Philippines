@@ -1,0 +1,51 @@
+<div class="row mx-0">
+  <div class="col-2"></div>
+  <div class="col-8 posts-list">
+    <div class="single-post">
+      <div class="feature-img mx-auto" style="max-width: 340px;">
+        <img class="img-thumbnail" th:src="${post.headerImageUrl}" alt="missing image">
+      </div>
+      <div class="blog_details">
+        <h2 th:text="${post.title}"></h2>
+        <p th:text="${#strings.abbreviate(post.article, 255)}"></p>
+      </div>
+    </div>
+    <div class="comments-area">
+      <h4><span th:text="${#lists.size(post.comments)}"></span> Comments</h4>
+      <th:block th:if="${#lists.isEmpty(post.comments)}">
+        <h3>No Comments!</h3></th:block>
+      <div class="comment-list" th:each="comment : ${post.comments}">
+        <div class="row">
+          <div class="thumb col-md-2" style="max-width: 100px;">
+            <img th:src="${comment.commenter.profilePictureUrl}" alt="missing image">
+          </div>
+          <div class="col-md-8">
+            <p class="comment" th:text="${comment.content}"></p>
+            <div class="d-flex">
+              <div class="d-flex align-items-center mr-5">
+                <h5>
+                  <a th:href="@{/users/profile/{username}
+                        (username = ${comment.commenter.username})}"
+                     th:text="${#strings.isEmpty(comment.commenter.fullName)} ?
+                           ${comment.commenter.username} :
+                           ${comment.commenter.fullName}
+                        "></a>
+                </h5>
+                <p class="date"
+                   th:text="${#temporals.format(comment.dateCommented, 'dd-MMM-yyyy HH:mm:ss')}"></p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-2">
+            <a th:href="@{/admin/edit-blog-comment/{postId}/delete/{commentId}
+              (commentId=${comment.id}, postId=${post.id})}"
+               data-toggle="tooltip" title="" class="delete-comment delBtn"
+               data-original-title="Delete Comment">
+              <i class="material-icons">highlight_off</i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<th:block th:include="~{fragments/delete-modal}"></th:block>

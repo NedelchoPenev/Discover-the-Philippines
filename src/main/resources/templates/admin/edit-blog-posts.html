@@ -54,8 +54,12 @@
             <td class="col-md-3">
               <a th:href="@{/admin/edit-blog-post/{id} (id=${post.id})}" data-toggle="tooltip"
                  class="settings" title=""
-                 data-original-title="Edit">
+                 data-original-title="Edit Post">
                 <i class="material-icons">edit</i></a>
+              <a th:href="@{/admin/edit-blog-comments/{id} (id=${post.id})}" data-toggle="tooltip"
+                 class="text-success" title=""
+                 data-original-title="Manage Comments">
+                <i class="material-icons">comment</i></a>
               <a th:href="@{/admin/edit-blog-post/delete/{id} (id=${post.id})}" data-toggle="tooltip"
                  title="" class="delete delBtn" data-original-title="Delete">
                 <i class="material-icons">highlight_off</i></a>

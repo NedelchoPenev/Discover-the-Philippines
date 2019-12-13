@@ -34,6 +34,7 @@ public class UserServiceImpl implements UserService, ApplicationListener<Authent
   private static final String INCORRECT_PASSWORD = "Incorrect password!";
   private static final String INCORRECT_ID = "Incorrect id!";
   private static final String DEFAULT_PROFILE_PICTURE = "https://res.cloudinary.com/duddzgxsd/image/upload/v1534965846/important/j418yffqf62ps0umrr7l.png";
+
   private final UserRepository userRepository;
   private final RoleService roleService;
   private final ModelMapper modelMapper;

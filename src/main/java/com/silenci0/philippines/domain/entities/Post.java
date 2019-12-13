@@ -131,7 +131,7 @@ public class Post extends BaseEntity{
   }
 
   public void removeComment(Comment comment, User user) {
-    this.comments.add(comment);
+    this.comments.remove(comment);
     user.removeComment(comment);
   }
 }

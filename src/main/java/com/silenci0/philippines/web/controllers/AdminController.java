@@ -236,7 +236,7 @@ public class AdminController extends BaseController {
       this.modelMapper.map(bindingModel, ThingsToDoEditServiceModel.class);
     this.thingsToDoService.editThingToDo(id, serviceModel, principal);
 
-    return redirect("/things-to-do", modelAndView);
+    return redirect("/things-to-do/details/" + id, modelAndView);
   }
 
 
@@ -436,5 +436,25 @@ public class AdminController extends BaseController {
 
     modelAndView.addObject("page", pageUsers);
     return view("admin/edit-users", "users", users, modelAndView);
+  }
+
+  @GetMapping("/edit-blog-comments/{id}")
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
+  public ModelAndView getEditBlogComments(ModelAndView modelAndView,
+                                      @PathVariable String id) {
+    PostEditCommentsServiceModel serviceModel = this.postService.findByEditCommentsId(id);
+    PostEditCommentsViewModel post = this.modelMapper.map(serviceModel, PostEditCommentsViewModel.class);
+
+    return view("admin/edit-blog-comments", "post", post, modelAndView);
+  }
+
+  @GetMapping("/edit-blog-comment/{postId}/delete/{commentId}")
+  public ModelAndView deleteCommentFromPost(ModelAndView modelAndView,
+                                            @PathVariable String postId,
+                                            @PathVariable String commentId){
+
+    this.postService.deleteComment(postId, commentId);
+
+    return redirect("/admin/edit-blog-comments/" + postId, modelAndView);
   }
 }

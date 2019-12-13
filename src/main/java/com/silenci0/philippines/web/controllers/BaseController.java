@@ -4,28 +4,28 @@ import org.springframework.web.servlet.ModelAndView;
 
 public abstract class BaseController {
 
-    protected ModelAndView view(String view, String objectName, Object object, ModelAndView modelAndView) {
-        modelAndView.addObject("view", view);
-        modelAndView.addObject(objectName, object);
+  protected ModelAndView view(String view, String objectName, Object object, ModelAndView modelAndView) {
+    modelAndView.addObject("view", view);
+    modelAndView.addObject(objectName, object);
 
-        modelAndView.setViewName("fragments/base-layout");
+    modelAndView.setViewName("fragments/base-layout");
 
-        return modelAndView;
-    }
+    return modelAndView;
+  }
 
-    protected ModelAndView view(String view, ModelAndView modelAndView) {
-        modelAndView.addObject("view", view);
+  protected ModelAndView view(String view, ModelAndView modelAndView) {
+    modelAndView.addObject("view", view);
 
-        modelAndView.setViewName("fragments/base-layout");
+    modelAndView.setViewName("fragments/base-layout");
 
-        return modelAndView;
-    }
+    return modelAndView;
+  }
 
-    protected ModelAndView redirect(String url, ModelAndView modelAndView) {
-        modelAndView.setViewName("redirect:" + url);
+  protected ModelAndView redirect(String url, ModelAndView modelAndView) {
+    modelAndView.setViewName("redirect:" + url);
 
-        return modelAndView;
-    }
+    return modelAndView;
+  }
 
 //    protected ModelAndView view(String view, ModelAndView modelAndView) {
 //        modelAndView.setViewName(view);

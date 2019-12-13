@@ -36,4 +36,8 @@ public interface PostService {
   PostEditServiceModel findByIdEdit(String id);
 
   void editPost(String id, PostEditBindingModel bindingModel, String name) throws IOException;
+
+  PostEditCommentsServiceModel findByEditCommentsId(String id);
+
+  void deleteComment(String postId, String commentId);
 }

@@ -23,40 +23,47 @@
             </p>
           </div>
         </div>
-        <div class="navigation-top">
-          <div class="d-sm-flex text-center">
-            <a th:href="${isLikeable} ?
+        <div class="navigation-top px-3">
+          <div class="row">
+            <div class="col-md-8">
+              <a th:href="${isLikeable} ?
             @{/blog/{postId}/like (postId = ${post.id})} :
               '#'"
-               class="like-info">
-              <i sec:authorize="isAuthenticated()" class="far fa-heart" title="" data-toggle="tooltip"
-                 data-original-title="Like"></i>
-              <i sec:authorize="isAnonymous()" class="far fa-heart" title="" data-toggle="tooltip"
-                 data-original-title="Login to Like"></i>
-            </a>
-            <span class="align-middle">
+                 class="like-info">
+                <i sec:authorize="isAuthenticated()" class="far fa-heart" title="" data-toggle="tooltip"
+                   data-original-title="Like"></i>
+                <i sec:authorize="isAnonymous()" class="far fa-heart like-login"
+                   title="" data-toggle="tooltip"
+                   data-original-title="Login to Like"></i>
+              </a>
+              <span class="align-middle">
                   <span sec:authorize="isAuthenticated()" th:if="${!isLikeable}">You and</span>
                   <span th:text="${#sets.size(post.likes)}"></span> likes</span>
-            <div class="col-sm-6 text-center my-2 my-sm-0">
             </div>
-            <ul class="social-icons">
-              <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
-              <li><a href="#"><i class="fab fa-twitter"></i></a></li>
-              <li><a href="#"><i class="fab fa-dribbble"></i></a></li>
-              <li><a href="#"><i class="fab fa-behance"></i></a></li>
-            </ul>
+            <div class="col-md-4 text-right">
+              <ul class="social-icons">
+                <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
+                <li><a href="#"><i class="fab fa-twitter"></i></a></li>
+                <li><a href="#"><i class="fab fa-dribbble"></i></a></li>
+                <li><a href="#"><i class="fab fa-behance"></i></a></li>
+              </ul>
+            </div>
           </div>
         </div>
         <div class="blog-author">
+          <h3>Author:</h3>
           <div class="media align-items-center">
-            <img th:src="${post.author.profilePictureUrl}" alt="missing image">
-            <div class="media-body">
+            <div class="d-flex flex-column justify-content-center mr-3">
               <a th:href="@{/users/profile/{username} (username = ${post.author.username})}">
-                <h4 th:text="${#strings.isEmpty(post.author.fullName)} ?
+                <img th:src="${post.author.profilePictureUrl}" alt="missing image">
+                <h4 class="text-center mt-2"
+                    th:text="${#strings.isEmpty(post.author.fullName)} ?
                     ${post.author.username} :
                     ${post.author.fullName}"></h4>
               </a>
-              <p th:text="${#strings.abbreviate(post.author.aboutMe, 200)}"></p>
+            </div>
+            <div class="media-body">
+              <p class="text-break" th:text="${#strings.abbreviate(post.author.aboutMe, 200)}"></p>
             </div>
           </div>
         </div>
@@ -67,21 +74,23 @@
           <div class="comment-list" th:each="comment : ${post.comments}">
             <div class="row justify-content-between">
               <div class="thumb col-md-2">
-                <img th:src="${comment.commenter.profilePictureUrl}" alt="missing image">
+                <div class="d-flex flex-column text-center">
+                  <a th:href="@{/users/profile/{username}
+                        (username = ${comment.commenter.username})}">
+                    <img th:src="${comment.commenter.profilePictureUrl}" alt="missing image">
+                    <h5 class="text-center mt-2"
+                        th:text="${#strings.isEmpty(comment.commenter.fullName)} ?
+                           ${comment.commenter.username} :
+                           ${comment.commenter.fullName}"></h5>
+                  </a>
+                </div>
               </div>
               <div class="col-md-10">
                 <p class="comment" th:text="${comment.content}"></p>
                 <div class="d-flex justify-content-between">
-                  <div class="d-flex align-items-center">
-                    <h5>
-                      <a th:href="@{/users/profile/{username}
-                        (username = ${comment.commenter.username})}"
-                         th:text="${#strings.isEmpty(comment.commenter.fullName)} ?
-                           ${comment.commenter.username} :
-                           ${comment.commenter.fullName}
-                        "></a>
-                    </h5>
-                    <p class="date" th:text="${#temporals.format(comment.dateCommented, 'dd-MMM-yyyy HH:mm:ss')}"></p>
+                  <div class="d-flex">
+                    <p class="date"
+                       th:text="${#temporals.format(comment.dateCommented, 'dd-MMM-yyyy HH:mm:ss')}"></p>
                   </div>
                 </div>
               </div>
@@ -102,7 +111,8 @@
             </div>
             <div class="form-group">
               <button sec:authorize="isAuthenticated()"
-                      type="submit" class="button button-contactForm btn_1">Post Comment</button>
+                      type="submit" class="button button-contactForm btn_1">Post Comment
+              </button>
               <h3 sec:authorize="isAnonymous()">Login to Leave a Comment</h3>
             </div>
           </form>

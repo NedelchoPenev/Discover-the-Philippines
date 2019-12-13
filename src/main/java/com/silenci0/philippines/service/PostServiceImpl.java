@@ -176,26 +176,6 @@ public class PostServiceImpl implements PostService {
     this.postRepository.saveAndFlush(post);
   }
 
-  private void setImage(Post post, User user, MultipartFile headerImage) throws IOException {
-    if (!headerImage.isEmpty()) {
-      Map response = this.cloudinaryService.uploadImageGetFullResponse(headerImage);
-      Image image = new Image();
-      image.setUrl(response.get("secure_url").toString());
-      image.setPublic_id(response.get("public_id").toString());
-      image.setUploadDate(LocalDateTime.now());
-      image.setUploader(user);
-      post.setHeaderImage(image);
-    }
-  }
-
-  private List<CommentViewModel> sortComments(Post post) {
-    return post.getComments()
-      .stream()
-      .sorted((c1, c2) -> c2.getDateCommented().compareTo(c1.getDateCommented()))
-      .map(c -> this.modelMapper.map(c, CommentViewModel.class))
-      .collect(Collectors.toList());
-  }
-
   @Override
   public void addLikeToPost(String postId, String likerUsername) {
     Post post = this.postRepository.findById(postId).orElseThrow(() -> new IllegalArgumentException(INCORRECT_ID));
@@ -258,6 +238,53 @@ public class PostServiceImpl implements PostService {
     post.setComments(null);
 
     this.postRepository.delete(post);
+  }
+
+  @Override
+  public PostEditCommentsServiceModel findByEditCommentsId(String id) {
+    Post post = this.postRepository.findById(id).orElseThrow(() -> new IllegalArgumentException(INCORRECT_ID));
+
+    PostEditCommentsServiceModel serviceModel =
+      this.modelMapper.map(post, PostEditCommentsServiceModel.class);
+    serviceModel.setArticle(Jsoup.parse(post.getArticle()).text());
+
+    List<CommentViewModel> commentsSorted = sortComments(post);
+
+    serviceModel.setComments(commentsSorted);
+
+    return serviceModel;
+  }
+
+  @Override
+  public void deleteComment(String postId, String commentId) {
+    Post post = this.postRepository
+      .findById(postId).orElseThrow(() -> new IllegalArgumentException(INCORRECT_ID));
+    Comment comment = this.commentRepository
+      .findById(commentId).orElseThrow(() -> new IllegalArgumentException(INCORRECT_ID));
+
+    post.removeComment(comment, comment.getCommenter());
+
+    this.postRepository.saveAndFlush(post);
+  }
+
+  private void setImage(Post post, User user, MultipartFile headerImage) throws IOException {
+    if (!headerImage.isEmpty()) {
+      Map response = this.cloudinaryService.uploadImageGetFullResponse(headerImage);
+      Image image = new Image();
+      image.setUrl(response.get("secure_url").toString());
+      image.setPublic_id(response.get("public_id").toString());
+      image.setUploadDate(LocalDateTime.now());
+      image.setUploader(user);
+      post.setHeaderImage(image);
+    }
+  }
+
+  private List<CommentViewModel> sortComments(Post post) {
+    return post.getComments()
+      .stream()
+      .sorted((c1, c2) -> c2.getDateCommented().compareTo(c1.getDateCommented()))
+      .map(c -> this.modelMapper.map(c, CommentViewModel.class))
+      .collect(Collectors.toList());
   }
 
   private AllPostsServiceModel mapToServiceModel(Post p) {

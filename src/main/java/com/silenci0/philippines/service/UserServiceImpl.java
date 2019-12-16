@@ -18,6 +18,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpSession;
 import java.security.Principal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -40,15 +41,19 @@ public class UserServiceImpl implements UserService, ApplicationListener<Authent
   private final ModelMapper modelMapper;
   private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
+  private final HttpSession session;
+
   @Autowired
   public UserServiceImpl(UserRepository userRepository,
                          RoleService roleService,
                          ModelMapper modelMapper,
-                         BCryptPasswordEncoder bCryptPasswordEncoder) {
+                         BCryptPasswordEncoder bCryptPasswordEncoder,
+                         HttpSession session) {
     this.userRepository = userRepository;
     this.roleService = roleService;
     this.modelMapper = modelMapper;
     this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+    this.session = session;
   }
 
   @Override
@@ -179,6 +184,7 @@ public class UserServiceImpl implements UserService, ApplicationListener<Authent
     User user = this.userRepository.findByUsername(username)
       .orElseThrow(() -> new UsernameNotFoundException(USERNAME_NOT_FOUND));
     user.setLastDateLogin(LocalDateTime.now());
+    session.setAttribute("username", username);
     this.userRepository.save(user);
   }
 }

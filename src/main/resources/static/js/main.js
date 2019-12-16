@@ -163,85 +163,76 @@ function fetchAllImages() {
   })
 }
 
-$(function () {
-  if ($('.container').is($('#add-pictures'))) {
-    fetch('/places/fetch/all')
-      .then((response) => response.json())
-      .then((json) => {
-        json.forEach((place) => $('#add-places')
-          .append(`<option value="${place.name}">${place.name}</option>`));
-      })
-      .catch((err) => console.log(err));
-  }
-});
+if ($('.container').is($('#add-pictures'))) {
+  fetch('/places/fetch/all')
+    .then((response) => response.json())
+    .then((json) => {
+      json.forEach((place) => $('#add-places')
+        .append(`<option value="${place.name}">${place.name}</option>`));
+    })
+    .catch((err) => console.log(err));
+}
 
-$(function () {
-  if ($('.container-fluid').is($('#add-block-post'))) {
-    console.log(categories);
-    fetch('/category/fetch/all')
-      .then((response) => response.json())
-      .then((json) => {
-        json.forEach((category) => $('#add-categories')
-          .append(`<option value="${category.id}">${category.name}</option>`));
-      }).then(() => {
-      if (categories) {
-        $('.selectpicker').val(categories);
-      }
-      $('.selectpicker').selectpicker("refresh");
-    }).catch((err) => console.log(err));
-  }
-});
+if ($('.container-fluid').is($('#add-block-post'))) {
+  console.log(categories);
+  fetch('/category/fetch/all')
+    .then((response) => response.json())
+    .then((json) => {
+      json.forEach((category) => $('#add-categories')
+        .append(`<option value="${category.id}">${category.name}</option>`));
+    }).then(() => {
+    if (categories) {
+      $('.selectpicker').val(categories);
+    }
+    $('.selectpicker').selectpicker("refresh");
+  }).catch((err) => console.log(err));
+}
 
-$(function () {
-  if ($('aside').is($('.post_category_widget'))) {
-    fetch('/category/fetch/top')
-      .then((response) => response.json())
-      .then((json) => {
-        json.forEach((category) => $('.cat-list')
-          .append(`<li>
+if ($('aside').is($('.post_category_widget'))) {
+  fetch('/category/fetch/top')
+    .then((response) => response.json())
+    .then((json) => {
+      json.forEach((category) => $('.cat-list')
+        .append(`<li>
             <a href="/blog/category/${category.id}" class="d-flex">
               <p>${category.name}</p>
               <p class="text-success">&nbsp(${category.postsSize})</p>
             </a>
           </li>`));
-      })
-      .catch((err) => console.log(err));
-  }
-});
+    })
+    .catch((err) => console.log(err));
+}
 
-$(function () {
-  if ($('aside').is($('.instagram_feeds'))) {
-    fetch('/gallery/fetch/all')
-      .then((response) => response.json())
-      .then((json) => {
-        json.sort((i1, i2) => i2.uploadDate - i1.uploadDate)
-          .slice(0, 6).forEach((image) =>
-          $('.instagram_row').append(`<li>
+if ($('aside').is($('.instagram_feeds'))) {
+  fetch('/gallery/fetch/all')
+    .then((response) => response.json())
+    .then((json) => {
+      json.sort((i1, i2) => i2.uploadDate - i1.uploadDate)
+        .slice(0, 6).forEach((image) =>
+        $('.instagram_row').append(`<li>
             <a href="${image.url}" data-fancybox="gallery">
               <img class="img-fluid" src="${image.url}" alt="missing image">
             </a>
           </li>`));
-      })
-      .catch((err) => console.log(err));
-  }
-});
+    })
+    .catch((err) => console.log(err));
+}
 
-$(function () {
-  if ($('aside').is($('.popular_post_widget'))) {
-    fetch('/blog/fetch/top-posts')
-      .then((response) => response.json())
-      .then((json) => {
-        json.forEach((post) => {
-          let date = new Date(post.datePosted).toLocaleDateString('en-GB', {
-            year: 'numeric',
-            month: 'short',
-            day: '2-digit'
-          });
+if ($('aside').is($('.popular_post_widget'))) {
+  fetch('/blog/fetch/top-posts')
+    .then((response) => response.json())
+    .then((json) => {
+      json.forEach((post) => {
+        let date = new Date(post.datePosted).toLocaleDateString('en-GB', {
+          year: 'numeric',
+          month: 'short',
+          day: '2-digit'
+        });
 
-          let title = post.title.slice(0, 15);
-          let trunc = post.title.length > 15 ? '...' : '';
+        let title = post.title.slice(0, 15);
+        let trunc = post.title.length > 15 ? '...' : '';
 
-          $('#popular_posts').append(`
+        $('#popular_posts').append(`
         <div class="media post_item row">
           <div class="col-md-4">
             <img src="${post.headerImageUrl}" alt="post">
@@ -255,11 +246,10 @@ $(function () {
           </div>
         </div>
           `)
-        });
-      })
-      .catch((err) => console.log(err));
-  }
-});
+      });
+    })
+    .catch((err) => console.log(err));
+}
 
 $("time.timeago").timeago();
 
@@ -267,25 +257,25 @@ $(".like-login").on("click", function () {
   $(this).notify("Please, Login to Like", 'error');
 });
 
-// if (($("#login-success-notify").length)){
-//   $.notify.addStyle('welcome', {
-//     html: "<div><span data-notify-text/></div>",
-//     classes: {
-//       base: {
-//         "white-space": "nowrap",
-//         "color": "#468847",
-//         "background-color": "#DFF0D8",
-//         "border-color": "#D6E9C6",
-//         "border": "1px solid #fbeed5",
-//         "border-radius": "4px",
-//         "font-weight": "bold",
-//         "padding": "15px",
-//         "font-size": "30px"
-//       }
-//     }
-//   });
-//
-//   let username = $("#login-success-notify").text();
-//   $.notify(`Welcome back, ${username}!`, {position: 'top center', style: 'welcome'});
-//   $("#login-success-notify").remove();
-// }
+if (($("#login-success-notify").length)) {
+  $.notify.addStyle('welcome', {
+    html: "<div><span data-notify-text/></div>",
+    classes: {
+      base: {
+        "white-space": "nowrap",
+        "color": "#468847",
+        "background-color": "#DFF0D8",
+        "border-color": "#D6E9C6",
+        "border": "1px solid #fbeed5",
+        "border-radius": "4px",
+        "font-weight": "bold",
+        "padding": "15px",
+        "font-size": "30px"
+      }
+    }
+  });
+
+  let username = $("#login-success-notify").text();
+  $.notify(`Welcome back, ${username}!`, {position: 'top center', style: 'welcome'});
+  $("#login-success-notify").remove();
+}

@@ -791,7 +791,7 @@ ul {
     justify-content: center;
   }
 
-  .mobile-device-dir > li.nav-item.dropdown > div {
+  li.nav-item.dropdown > div {
     position: absolute;
   }
 

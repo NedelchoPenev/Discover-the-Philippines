@@ -1,5 +1,6 @@
 <th:block th:fragment>
-<!--    <div id="login-success-notify" th:text="${#authentication.getPrincipal().getUsername()}"></div>-->
+    <div id="login-success-notify" th:if="${showWelcomeMessage}"
+         th:text="${#authentication.getPrincipal().getUsername()}" disabled="true"></div>
     <ul class="navbar-nav mobile-device-dir">
         <li class="nav-item my-auto" >
             <a th:href="@{/creators}" sec:authorize="hasRole('ROLE_CREATOR')" class="nav-link" data-toggle="tooltip" data-placement="bottom" title="Creator Place">

@@ -1,5 +1,6 @@
 package com.silenci0.philippines.config;
 
+import com.silenci0.philippines.web.interceptors.LoggedInMessageInterceptor;
 import com.silenci0.philippines.web.interceptors.LoggerInterceptor;
 import com.silenci0.philippines.web.interceptors.RequestProcessingTimeInterceptor;
 import org.springframework.context.annotation.Configuration;
@@ -16,5 +17,7 @@ public class ApplicationWebMvcConfiguration implements WebMvcConfigurer {
 
     registry.addInterceptor(new LoggerInterceptor())
       .excludePathPatterns("/css/**", "/js/**", "/webfonts/**");
+
+    registry.addInterceptor(new LoggedInMessageInterceptor());
   }
 }

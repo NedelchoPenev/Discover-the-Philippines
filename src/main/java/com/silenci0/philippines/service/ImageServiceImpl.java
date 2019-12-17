@@ -6,7 +6,6 @@ import com.silenci0.philippines.domain.models.service.ImageAddServiceModel;
 import com.silenci0.philippines.domain.models.service.ImageEditServiceModel;
 import com.silenci0.philippines.domain.models.service.ImageServiceModel;
 import com.silenci0.philippines.repository.ImageRepository;
-import com.silenci0.philippines.repository.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -24,22 +23,27 @@ import java.util.stream.Collectors;
 
 @Service
 public class ImageServiceImpl implements ImageService {
-  private static final String INCORRECT_ID = "Wrong id!";
+  private static final String INCORRECT_ID = "There is no image with that id!";
 
   private final ImageRepository imageRepository;
   private final ModelMapper modelMapper;
-  private final UserRepository userRepository;
+  private final UserService userService;
   private final CloudinaryService cloudinaryService;
 
   @Autowired
   public ImageServiceImpl(ImageRepository imageRepository,
                           ModelMapper modelMapper,
-                          UserRepository userRepository,
+                          UserService userService,
                           CloudinaryService cloudinaryService) {
     this.imageRepository = imageRepository;
     this.modelMapper = modelMapper;
-    this.userRepository = userRepository;
+    this.userService = userService;
     this.cloudinaryService = cloudinaryService;
+  }
+
+  @Override
+  public void saveImage(Image image){
+    this.imageRepository.saveAndFlush(image);
   }
 
   @Override
@@ -121,7 +125,7 @@ public class ImageServiceImpl implements ImageService {
       image.setUrl(response.get("secure_url").toString());
       image.setPublic_id((response.get("public_id").toString()));
       image.setUploadDate(LocalDateTime.now());
-      image.setUploader(this.userRepository.findByUsername(principal.getName()).orElseThrow());
+      image.setUploader(this.userService.findUserByUsername(principal.getName()));
       this.imageRepository.saveAndFlush(image);
     }
   }
@@ -144,6 +148,12 @@ public class ImageServiceImpl implements ImageService {
     return this.modelMapper.map(this.imageRepository.findById(id).orElseThrow(() ->
         new IllegalArgumentException(INCORRECT_ID)),
       ImageEditServiceModel.class);
+  }
+
+  @Override
+  public Image findByIdWithoutMap(String id) {
+    return this.imageRepository.findById(id).orElseThrow(() ->
+        new IllegalArgumentException(INCORRECT_ID));
   }
 
   @Override

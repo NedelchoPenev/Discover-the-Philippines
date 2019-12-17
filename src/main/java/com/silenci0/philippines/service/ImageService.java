@@ -1,5 +1,6 @@
 package com.silenci0.philippines.service;
 
+import com.silenci0.philippines.domain.entities.Image;
 import com.silenci0.philippines.domain.models.service.AllPicturesServiceModel;
 import com.silenci0.philippines.domain.models.service.ImageAddServiceModel;
 import com.silenci0.philippines.domain.models.service.ImageEditServiceModel;
@@ -15,6 +16,8 @@ import java.util.Set;
 
 public interface ImageService {
 
+  void saveImage(Image image);
+
   List<ImageServiceModel> findAll();
 
   Map<String, Set<ImageServiceModel>> findAllByCategory(String category);
@@ -28,6 +31,8 @@ public interface ImageService {
   String deleteById(String id) throws IOException;
 
   ImageEditServiceModel findById(String id);
+
+  Image findByIdWithoutMap(String id);
 
   void editImage(String id, ImageEditServiceModel serviceModel);
 }

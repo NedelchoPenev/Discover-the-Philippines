@@ -185,6 +185,16 @@ public class CategoryServiceImplTest {
   }
 
   @Test
+  public void findByIdWithoutMap_ShouldReturnCorrectCategory() {
+    when(this.mockCategoryRepository.findById("category1"))
+      .thenReturn(java.util.Optional.ofNullable(this.testCategory));
+
+    PostCategory category1 = this.categoryService.findByIdWithoutMap("category1");
+
+    Assert.assertEquals(this.testCategory.getName(), category1.getName());
+  }
+
+  @Test
   public void editCategory_ShouldEditCategory() {
     CategoryServiceModel serviceModelEdit = new CategoryServiceModel(){{
       setName("Test Name 2");

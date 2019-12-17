@@ -18,6 +18,8 @@ import java.util.stream.Collectors;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
+  private final static String INCORRECT_ID = "There is no category with that id!";
+
   private final CategoryRepository categoryRepository;
   private final ModelMapper modelMapper;
 
@@ -79,6 +81,12 @@ public class CategoryServiceImpl implements CategoryService {
   public CategoryServiceModel findById(String id) {
     return this.modelMapper
       .map(this.categoryRepository.findById(id).orElseThrow(), CategoryServiceModel.class);
+  }
+
+  @Override
+  public PostCategory findByIdWithoutMap(String id) {
+    return this.categoryRepository.findById(id)
+      .orElseThrow(() -> new IllegalArgumentException(INCORRECT_ID));
   }
 
   @Override

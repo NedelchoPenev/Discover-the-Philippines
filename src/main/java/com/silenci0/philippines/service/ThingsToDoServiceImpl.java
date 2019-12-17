@@ -4,7 +4,6 @@ import com.silenci0.philippines.domain.entities.Image;
 import com.silenci0.philippines.domain.entities.ThingsToDo;
 import com.silenci0.philippines.domain.entities.User;
 import com.silenci0.philippines.domain.models.service.*;
-import com.silenci0.philippines.repository.ImageRepository;
 import com.silenci0.philippines.repository.ThingsToDoRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,19 +26,18 @@ public class ThingsToDoServiceImpl implements ThingsToDoService {
   private static final String MAIN_IMAGE = "Cannot delete the main image!";
 
   private final ThingsToDoRepository thingsToDoRepository;
-  private final ImageRepository imageRepository;
-  private final ModelMapper modelMapper;
+  private final ImageService imageService;
   private final CloudinaryService cloudinaryService;
   private final UserService userService;
+  private final ModelMapper modelMapper;
 
   @Autowired
   public ThingsToDoServiceImpl(ThingsToDoRepository thingsToDoRepository,
-                               ImageRepository imageRepository,
-                               ModelMapper modelMapper,
+                               ImageService imageService, ModelMapper modelMapper,
                                CloudinaryService cloudinaryService,
                                UserService userService) {
     this.thingsToDoRepository = thingsToDoRepository;
-    this.imageRepository = imageRepository;
+    this.imageService = imageService;
     this.modelMapper = modelMapper;
     this.cloudinaryService = cloudinaryService;
     this.userService = userService;
@@ -48,13 +46,13 @@ public class ThingsToDoServiceImpl implements ThingsToDoService {
   @Override
   public void saveThing(ThingsToDoAddServiceModel thingsToDoAddServiceModel, Principal principal) throws IOException {
     ThingsToDo thingsToDo = this.modelMapper.map(thingsToDoAddServiceModel, ThingsToDo.class);
-    UserServiceModel userByUserName = this.userService.findUserByUserName(principal.getName());
+    User userByUsername = this.userService.findUserByUsername(principal.getName());
 
     List<Image> imagesUrls = new ArrayList<>();
     for (MultipartFile image : thingsToDoAddServiceModel.getImages()) {
-      Image imageDB = mapImage(thingsToDo, userByUserName, image);
+      Image imageDB = mapImage(thingsToDo, userByUsername, image);
       imagesUrls.add(imageDB);
-      this.imageRepository.save(imageDB);
+      this.imageService.saveImage(imageDB);
     }
     thingsToDo.setImagesUrls(imagesUrls);
     thingsToDo.setMainImageUrl(imagesUrls.get(0).getUrl());
@@ -117,8 +115,7 @@ public class ThingsToDoServiceImpl implements ThingsToDoService {
   public String deleteImageById(String thingToDoId, String imageId) {
     ThingsToDo thingsToDo = this.thingsToDoRepository.findById(thingToDoId)
       .orElseThrow(() -> new IllegalArgumentException(ID_NOT_FOUND));
-    Image image = this.imageRepository.findById(imageId)
-      .orElseThrow(() -> new IllegalArgumentException(ID_NOT_FOUND));
+    Image image = this.imageService.findByIdWithoutMap(imageId);
 
     if (thingsToDo.getMainImageUrl().equals(image.getUrl())){
       throw new IllegalArgumentException(MAIN_IMAGE);
@@ -133,13 +130,13 @@ public class ThingsToDoServiceImpl implements ThingsToDoService {
   public void editThingToDo(String id, ThingsToDoEditServiceModel serviceModel, Principal principal) throws IOException {
     ThingsToDo thingsToDo =
       this.thingsToDoRepository.findById(id).orElseThrow(() -> new IllegalArgumentException(ID_NOT_FOUND));
-    UserServiceModel userByUsername = this.userService.findUserByUserName(principal.getName());
+    User userByUsername = this.userService.findUserByUsername(principal.getName());
 
     for (MultipartFile image : serviceModel.getImages()) {
       if (!image.isEmpty()) {
         Image imageDB = mapImage(thingsToDo, userByUsername, image);
         thingsToDo.getImagesUrls().add(imageDB);
-        this.imageRepository.save(imageDB);
+        this.imageService.saveImage(imageDB);
       }
     }
 
@@ -177,14 +174,14 @@ public class ThingsToDoServiceImpl implements ThingsToDoService {
       .collect(Collectors.toSet());
   }
 
-  private Image mapImage(ThingsToDo thingsToDo, UserServiceModel userByUsername, MultipartFile image) throws IOException {
+  private Image mapImage(ThingsToDo thingsToDo, User userByUsername, MultipartFile image) throws IOException {
     Image imageDB = new Image();
     Map imageMap = this.cloudinaryService.uploadImageGetFullResponse(image);
     imageDB.setUrl(imageMap.get("secure_url").toString());
     imageDB.setPublic_id(imageMap.get("public_id").toString());
     imageDB.setProvince(thingsToDo.getProvince());
     imageDB.setUploadDate(LocalDateTime.now());
-    imageDB.setUploader(this.modelMapper.map(userByUsername, User.class));
+    imageDB.setUploader(userByUsername);
 
     return imageDB;
   }

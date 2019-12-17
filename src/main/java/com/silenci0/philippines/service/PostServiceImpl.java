@@ -4,10 +4,8 @@ import com.silenci0.philippines.domain.entities.*;
 import com.silenci0.philippines.domain.models.binding.PostEditBindingModel;
 import com.silenci0.philippines.domain.models.service.*;
 import com.silenci0.philippines.domain.models.view.CommentViewModel;
-import com.silenci0.philippines.repository.CategoryRepository;
 import com.silenci0.philippines.repository.CommentRepository;
 import com.silenci0.philippines.repository.PostRepository;
-import com.silenci0.philippines.repository.UserRepository;
 import org.jsoup.Jsoup;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +13,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -30,13 +27,11 @@ import java.util.stream.Collectors;
 
 @Service
 public class PostServiceImpl implements PostService {
-
-  private static final String USERNAME_NOT_FOUND = "Username not found!";
-  private static final String INCORRECT_ID = "Incorrect id!";
+  private static final String INCORRECT_ID = "There is no post with that id!";
 
   private final PostRepository postRepository;
-  private final UserRepository userRepository;
-  private final CategoryRepository categoryRepository;
+  private final UserService userService;
+  private final CategoryService categoryService;
   private final CommentRepository commentRepository;
   private final CloudinaryService cloudinaryService;
 
@@ -44,13 +39,13 @@ public class PostServiceImpl implements PostService {
 
   @Autowired
   public PostServiceImpl(PostRepository postRepository,
-                         UserRepository userRepository,
-                         CategoryRepository categoryRepository,
-                         CommentRepository commentRepository, ModelMapper modelMapper,
+                         UserService userService,
+                         CategoryService categoryService, CommentRepository commentRepository,
+                         ModelMapper modelMapper,
                          CloudinaryService cloudinaryService) {
     this.postRepository = postRepository;
-    this.userRepository = userRepository;
-    this.categoryRepository = categoryRepository;
+    this.userService = userService;
+    this.categoryService = categoryService;
     this.commentRepository = commentRepository;
     this.modelMapper = modelMapper;
     this.cloudinaryService = cloudinaryService;
@@ -58,8 +53,7 @@ public class PostServiceImpl implements PostService {
 
   @Override
   public void savePost(PostAddServiceModel serviceModel, Principal principal) throws IOException {
-    User user = this.userRepository.findByUsername(principal.getName()).orElseThrow(() ->
-      new UsernameNotFoundException(USERNAME_NOT_FOUND));
+    User user = this.userService.findUserByUsername(principal.getName());
     Post post = this.modelMapper.map(serviceModel, Post.class);
 
     setImage(post, user, serviceModel.getHeaderImage());
@@ -68,7 +62,7 @@ public class PostServiceImpl implements PostService {
     post.setAuthor(user);
 
     for (String categoryId : serviceModel.getCategories()) {
-      PostCategory category = this.categoryRepository.getOne(categoryId);
+      PostCategory category = this.categoryService.findByIdWithoutMap(categoryId);
       post.addCategory(category);
     }
 
@@ -110,8 +104,7 @@ public class PostServiceImpl implements PostService {
 
   @Override
   public Page<AllPostsServiceModel> findPostsByCategoryId(String id, Pageable pageable) {
-    List<AllPostsServiceModel> posts = this.categoryRepository.findById(id)
-      .orElseThrow(() -> new IllegalArgumentException(INCORRECT_ID))
+    List<AllPostsServiceModel> posts = this.categoryService.findByIdWithoutMap(id)
       .getPosts()
       .stream()
       .map(this::mapToServiceModel)
@@ -153,8 +146,7 @@ public class PostServiceImpl implements PostService {
   public void editPost(String id, PostEditBindingModel model, String username) throws IOException {
     Post post = this.postRepository.findById(id)
       .orElseThrow(() -> new IllegalArgumentException(INCORRECT_ID));
-    User user = this.userRepository.findByUsername(username).orElseThrow(() ->
-      new UsernameNotFoundException(USERNAME_NOT_FOUND));
+    User user = this.userService.findUserByUsername(username);
 
     this.modelMapper.map(model, post);
 
@@ -166,7 +158,7 @@ public class PostServiceImpl implements PostService {
 
     Set<PostCategory> categories = new HashSet<>();
     for (String categoryId : model.getCategories()) {
-      PostCategory category = this.categoryRepository.getOne(categoryId);
+      PostCategory category = this.categoryService.findByIdWithoutMap(categoryId);
       category.addPost(post);
       categories.add(category);
     }
@@ -179,8 +171,7 @@ public class PostServiceImpl implements PostService {
   @Override
   public void addLikeToPost(String postId, String likerUsername) {
     Post post = this.postRepository.findById(postId).orElseThrow(() -> new IllegalArgumentException(INCORRECT_ID));
-    User user = this.userRepository.findByUsername(likerUsername).orElseThrow(() ->
-      new UsernameNotFoundException(USERNAME_NOT_FOUND));
+    User user = this.userService.findUserByUsername(likerUsername);
     post.addLike(user);
 
     this.postRepository.saveAndFlush(post);
@@ -189,8 +180,7 @@ public class PostServiceImpl implements PostService {
   @Override
   public void addCommentToPost(String postId, String comment, String likerUsername) {
     Post post = this.postRepository.findById(postId).orElseThrow(() -> new IllegalArgumentException(INCORRECT_ID));
-    User user = this.userRepository.findByUsername(likerUsername).orElseThrow(() ->
-      new UsernameNotFoundException(USERNAME_NOT_FOUND));
+    User user = this.userService.findUserByUsername(likerUsername);
     Comment commentToPost = new Comment();
     commentToPost.setContent(comment.trim());
     commentToPost.setCommenter(user);

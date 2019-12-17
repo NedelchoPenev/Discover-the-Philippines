@@ -5,7 +5,6 @@ import com.silenci0.philippines.domain.entities.Place;
 import com.silenci0.philippines.domain.entities.User;
 import com.silenci0.philippines.domain.models.service.AllPlacesServiceModel;
 import com.silenci0.philippines.domain.models.service.PlaceServiceModel;
-import com.silenci0.philippines.domain.models.service.UserServiceModel;
 import com.silenci0.philippines.repository.PlaceRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,7 +67,8 @@ public class PlaceServiceImpl implements PlaceService {
 
   @Override
   public PlaceServiceModel findById(String id) {
-    Place place = this.placeRepository.findById(id).orElseThrow(() -> new IllegalArgumentException(PLACE_NOT_FOUND));
+    Place place = this.placeRepository.findById(id)
+      .orElseThrow(() -> new IllegalArgumentException(PLACE_NOT_FOUND));
 
     return this.modelMapper.map(place, PlaceServiceModel.class);
   }
@@ -91,8 +91,12 @@ public class PlaceServiceImpl implements PlaceService {
   }
 
   @Override
-  public void editPlace(String id, PlaceServiceModel placeServiceModel, Principal principal) throws IOException {
-    Place place = this.placeRepository.findById(id).orElseThrow(() -> new IllegalArgumentException(PLACE_NOT_FOUND));
+  public void editPlace(String id,
+                        PlaceServiceModel placeServiceModel,
+                        Principal principal) throws IOException {
+
+    Place place = this.placeRepository.findById(id)
+      .orElseThrow(() -> new IllegalArgumentException(PLACE_NOT_FOUND));
 
     this.modelMapper.map(placeServiceModel, place);
 
@@ -101,17 +105,20 @@ public class PlaceServiceImpl implements PlaceService {
     this.placeRepository.saveAndFlush(place);
   }
 
-  private void mapImage(PlaceServiceModel placeServiceModel, Principal principal, Place place) throws IOException {
+  private void mapImage(PlaceServiceModel placeServiceModel,
+                        Principal principal,
+                        Place place) throws IOException {
+
     if (!placeServiceModel.getHeaderImage().isEmpty()) {
       Image image = new Image();
-      UserServiceModel userByUserName = this.userService.findUserByUserName(principal.getName());
+      User user = this.userService.findUserByUsername(principal.getName());
       Map map = this.cloudinaryService.uploadImageGetFullResponse(placeServiceModel.getHeaderImage());
       image.setUrl(map.get("secure_url").toString());
       image.setPublic_id(map.get("public_id").toString());
       image.setPlace(placeServiceModel.getName());
       image.setProvince(placeServiceModel.getProvince());
       image.setUploadDate(LocalDateTime.now());
-      image.setUploader(this.modelMapper.map(userByUserName, User.class));
+      image.setUploader(user);
       place.setHeaderImage(image);
     }
   }

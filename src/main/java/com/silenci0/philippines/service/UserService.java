@@ -1,5 +1,6 @@
 package com.silenci0.philippines.service;
 
+import com.silenci0.philippines.domain.entities.User;
 import com.silenci0.philippines.domain.models.service.UserAboutServiceModel;
 import com.silenci0.philippines.domain.models.service.UserEditServiceModel;
 import com.silenci0.philippines.domain.models.service.UserServiceModel;
@@ -16,6 +17,8 @@ public interface UserService extends UserDetailsService {
   UserServiceModel registerUser(UserServiceModel userServiceModel);
 
   UserServiceModel findUserByUserName(String username);
+
+  User findUserByUsername(String username);
 
   UserEditServiceModel findUserEditByUserName(String username);
 

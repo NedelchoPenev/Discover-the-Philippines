@@ -1,5 +1,6 @@
 package com.silenci0.philippines.service;
 
+import com.silenci0.philippines.domain.entities.PostCategory;
 import com.silenci0.philippines.domain.models.service.CategoryServiceModel;
 import com.silenci0.philippines.domain.models.service.CategoryTopServiceModel;
 import org.springframework.data.domain.Page;
@@ -19,6 +20,8 @@ public interface CategoryService {
   void deleteById(String id);
 
   CategoryServiceModel findById(String id);
+
+  PostCategory findByIdWithoutMap(String id);
 
   void editCategory(CategoryServiceModel serviceModel, String id);
 

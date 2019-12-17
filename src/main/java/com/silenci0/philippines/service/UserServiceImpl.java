@@ -93,6 +93,12 @@ public class UserServiceImpl implements UserService, ApplicationListener<Authent
   }
 
   @Override
+  public User findUserByUsername(String username) {
+    return this.userRepository.findByUsername(username)
+      .orElseThrow(() -> new UsernameNotFoundException(USERNAME_NOT_FOUND));
+  }
+
+  @Override
   public UserEditServiceModel findUserEditByUserName(String username) {
     return this.userRepository.findByUsername(username)
       .map(u -> this.modelMapper.map(u, UserEditServiceModel.class))

@@ -7,7 +7,6 @@ import com.silenci0.philippines.domain.models.service.ImageAddServiceModel;
 import com.silenci0.philippines.domain.models.service.ImageEditServiceModel;
 import com.silenci0.philippines.domain.models.service.ImageServiceModel;
 import com.silenci0.philippines.repository.ImageRepository;
-import com.silenci0.philippines.repository.UserRepository;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -45,7 +44,7 @@ public class ImageServiceImplTest {
   private CloudinaryService cloudinaryService;
 
   @Mock
-  private UserRepository userRepository;
+  private UserService userService;
 
   @InjectMocks
   private ImageServiceImpl imageService;
@@ -63,7 +62,16 @@ public class ImageServiceImplTest {
   }
 
   @Test
-  public void findAll_ShouldReturnCorrectSize() {
+  public void saveImage_shouldSaveCorrectImage(){
+    when(this.imageRepository.saveAndFlush(this.image)).thenReturn(this.image);
+
+    this.imageService.saveImage(this.image);
+
+    verify(this.imageRepository, times(1)).saveAndFlush(this.image);
+  }
+
+  @Test
+  public void findAll_shouldReturnCorrectSize() {
     List<Image> images = new ArrayList<>() {{
       add(image);
       add(image);
@@ -215,7 +223,7 @@ public class ImageServiceImplTest {
   }
 
   @Test
-  public void saveImages_ShouldSaveImages() throws IOException {
+  public void saveImages_shouldSaveImages() throws IOException {
     Map response = new HashMap(){{
       put("secure_url", "test-url");
       put("public_id", "test-id");
@@ -225,7 +233,7 @@ public class ImageServiceImplTest {
     when(this.modelMapper.map(any(), any())).thenReturn(this.image);
     when(this.cloudinaryService.uploadImageGetFullResponse(any()))
       .thenReturn(response);
-    when(this.userRepository.findByUsername(any())).thenReturn(Optional.ofNullable(mock(User.class)));
+    when(this.userService.findUserByUsername(any())).thenReturn(mock(User.class));
 
     ImageAddServiceModel imageServiceModel = new ImageAddServiceModel(){{
       setImages(new ArrayList<>(){{
@@ -239,7 +247,7 @@ public class ImageServiceImplTest {
   }
 
   @Test
-  public void findAllPageable_ShouldCallFindAll() {
+  public void findAllPageable_shouldCallFindAll() {
     Page<Image> categories = mock(Page.class);
     when(this.imageRepository.findAll(isA(Pageable.class))).thenReturn(categories);
 
@@ -292,6 +300,22 @@ public class ImageServiceImplTest {
     when(this.modelMapper.map(any(), any())).thenReturn(serviceModel);
 
     this.imageService.findById("wrong_id");
+  }
+
+  @Test
+  public void findByIdWithOutMap_shouldFindCorrect() {
+    when(this.imageRepository.findById("test_id")).thenReturn(Optional.ofNullable(this.image));
+
+    Image actual = this.imageService.findByIdWithoutMap("test_id");
+
+    Assert.assertEquals(this.image.getId(), actual.getId());
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void findByIdWithOutMap_withWrongId_shouldThrowException() {
+    when(this.imageRepository.findById("test_id")).thenReturn(Optional.ofNullable(this.image));
+
+    Image actual = this.imageService.findByIdWithoutMap("wrong_id");
   }
 
   @Test

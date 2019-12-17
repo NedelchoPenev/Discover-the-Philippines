@@ -17,7 +17,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.security.Principal;
 import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -25,6 +24,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class ImageServiceImpl implements ImageService {
+  private static final String INCORRECT_ID = "Wrong id!";
 
   private final ImageRepository imageRepository;
   private final ModelMapper modelMapper;
@@ -32,7 +32,9 @@ public class ImageServiceImpl implements ImageService {
   private final CloudinaryService cloudinaryService;
 
   @Autowired
-  public ImageServiceImpl(ImageRepository imageRepository, ModelMapper modelMapper, UserRepository userRepository,
+  public ImageServiceImpl(ImageRepository imageRepository,
+                          ModelMapper modelMapper,
+                          UserRepository userRepository,
                           CloudinaryService cloudinaryService) {
     this.imageRepository = imageRepository;
     this.modelMapper = modelMapper;
@@ -44,8 +46,8 @@ public class ImageServiceImpl implements ImageService {
   public List<ImageServiceModel> findAll() {
     return this.imageRepository.findAll()
       .stream()
-      .map(i -> this.modelMapper.map(i, ImageServiceModel.class))
       .sorted((i1, i2) -> i2.getUploadDate().compareTo(i1.getUploadDate()))
+      .map(i -> this.modelMapper.map(i, ImageServiceModel.class))
       .collect(Collectors.toList());
   }
 
@@ -101,7 +103,10 @@ public class ImageServiceImpl implements ImageService {
         throw new IllegalStateException("Unexpected value: " + category);
     }
 
-    return Arrays.asList(this.modelMapper.map(result, ImageServiceModel[].class));
+    return result
+      .stream()
+      .map(i -> this.modelMapper.map(i, ImageServiceModel.class))
+      .collect(Collectors.toList());
   }
 
   @Override
@@ -136,13 +141,15 @@ public class ImageServiceImpl implements ImageService {
 
   @Override
   public ImageEditServiceModel findById(String id) {
-    return this.modelMapper.map(this.imageRepository.findById(id).orElseThrow(),
+    return this.modelMapper.map(this.imageRepository.findById(id).orElseThrow(() ->
+        new IllegalArgumentException(INCORRECT_ID)),
       ImageEditServiceModel.class);
   }
 
   @Override
   public void editImage(String id, ImageEditServiceModel serviceModel) {
-    Image image = this.imageRepository.findById(id).orElseThrow();
+    Image image = this.imageRepository.findById(id).orElseThrow(() ->
+      new IllegalArgumentException(INCORRECT_ID));
     this.modelMapper.map(serviceModel, image);
 
     image.setPlace(serviceModel.getPlace() == null ?

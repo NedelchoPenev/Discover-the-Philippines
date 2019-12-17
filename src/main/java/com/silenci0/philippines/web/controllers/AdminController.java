@@ -368,7 +368,7 @@ public class AdminController extends BaseController {
                                                sort = "datePosted",
                                                direction = Sort.Direction.DESC) Pageable pageable) {
 
-    Page<AllPostsServiceModel> postsPage = this.postService.findByTitlePageable(title, pageable);
+    Page<AllPostsServiceModel> postsPage = this.postService.findByKeyword(title, pageable);
     List<PostsEditViewModel> posts = postsPage
       .stream()
       .map(p -> this.modelMapper.map(p, PostsEditViewModel.class))
@@ -412,9 +412,9 @@ public class AdminController extends BaseController {
       return view("admin/edit-blog-post", "bindingModel", bindingModel, modelAndView);
     }
 
-    this.modelMapper.map(bindingModel, PostEditServiceModel.class);
+    PostEditServiceModel serviceModel = this.modelMapper.map(bindingModel, PostEditServiceModel.class);
 
-    this.postService.editPost(id, bindingModel, principal.getName());
+    this.postService.editPost(id, serviceModel, principal.getName());
 
     return redirect("/blog/" + id, modelAndView);
   }

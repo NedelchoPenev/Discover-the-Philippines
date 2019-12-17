@@ -1,7 +1,6 @@
 package com.silenci0.philippines.service;
 
 import com.silenci0.philippines.domain.entities.*;
-import com.silenci0.philippines.domain.models.binding.PostEditBindingModel;
 import com.silenci0.philippines.domain.models.service.*;
 import com.silenci0.philippines.domain.models.view.CommentViewModel;
 import com.silenci0.philippines.repository.CommentRepository;
@@ -28,6 +27,7 @@ import java.util.stream.Collectors;
 @Service
 public class PostServiceImpl implements PostService {
   private static final String INCORRECT_ID = "There is no post with that id!";
+  private static final String INCORRECT_CATEGORY_ID = "There is no category with that id!";
 
   private final PostRepository postRepository;
   private final UserService userService;
@@ -143,7 +143,7 @@ public class PostServiceImpl implements PostService {
   }
 
   @Override
-  public void editPost(String id, PostEditBindingModel model, String username) throws IOException {
+  public void editPost(String id, PostEditServiceModel model, String username) throws IOException {
     Post post = this.postRepository.findById(id)
       .orElseThrow(() -> new IllegalArgumentException(INCORRECT_ID));
     User user = this.userService.findUserByUsername(username);
@@ -179,7 +179,8 @@ public class PostServiceImpl implements PostService {
 
   @Override
   public void addCommentToPost(String postId, String comment, String likerUsername) {
-    Post post = this.postRepository.findById(postId).orElseThrow(() -> new IllegalArgumentException(INCORRECT_ID));
+    Post post = this.postRepository.findById(postId)
+      .orElseThrow(() -> new IllegalArgumentException(INCORRECT_ID));
     User user = this.userService.findUserByUsername(likerUsername);
     Comment commentToPost = new Comment();
     commentToPost.setContent(comment.trim());
@@ -193,7 +194,7 @@ public class PostServiceImpl implements PostService {
   }
 
   @Override
-  public List<PostServiceModel> findNewestTakeFour() {
+  public List<PostServiceModel> findNewestTakeThree() {
     return this.postRepository
       .findAll(Sort.by(Sort.Direction.DESC, "datePosted"))
       .stream()
@@ -208,14 +209,10 @@ public class PostServiceImpl implements PostService {
   }
 
   @Override
-  public Page<AllPostsServiceModel> findByTitlePageable(String title, Pageable pageable) {
-    return this.postRepository.findByTitleContains(title, pageable)
-      .map(p -> this.modelMapper.map(p, AllPostsServiceModel.class));
-  }
-
-  @Override
   public void deleteById(String id) {
-    Post post = this.postRepository.findById(id).orElseThrow(() -> new IllegalArgumentException(INCORRECT_ID));
+    Post post = this.postRepository.findById(id)
+      .orElseThrow(() -> new IllegalArgumentException(INCORRECT_ID));
+
     post.getAuthor().removePost(post);
     for (PostCategory category : post.getCategories()) {
       category.removePost(post);
@@ -232,7 +229,8 @@ public class PostServiceImpl implements PostService {
 
   @Override
   public PostEditCommentsServiceModel findByEditCommentsId(String id) {
-    Post post = this.postRepository.findById(id).orElseThrow(() -> new IllegalArgumentException(INCORRECT_ID));
+    Post post = this.postRepository.findById(id)
+      .orElseThrow(() -> new IllegalArgumentException(INCORRECT_ID));
 
     PostEditCommentsServiceModel serviceModel =
       this.modelMapper.map(post, PostEditCommentsServiceModel.class);
@@ -247,10 +245,10 @@ public class PostServiceImpl implements PostService {
 
   @Override
   public void deleteComment(String postId, String commentId) {
-    Post post = this.postRepository
-      .findById(postId).orElseThrow(() -> new IllegalArgumentException(INCORRECT_ID));
-    Comment comment = this.commentRepository
-      .findById(commentId).orElseThrow(() -> new IllegalArgumentException(INCORRECT_ID));
+    Post post = this.postRepository.findById(postId)
+      .orElseThrow(() -> new IllegalArgumentException(INCORRECT_ID));
+    Comment comment = this.commentRepository.findById(commentId)
+      .orElseThrow(() -> new IllegalArgumentException(INCORRECT_CATEGORY_ID));
 
     post.removeComment(comment, comment.getCommenter());
 

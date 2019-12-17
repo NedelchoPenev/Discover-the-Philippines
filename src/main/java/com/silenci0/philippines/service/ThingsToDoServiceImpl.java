@@ -33,7 +33,8 @@ public class ThingsToDoServiceImpl implements ThingsToDoService {
 
   @Autowired
   public ThingsToDoServiceImpl(ThingsToDoRepository thingsToDoRepository,
-                               ImageService imageService, ModelMapper modelMapper,
+                               ImageService imageService,
+                               ModelMapper modelMapper,
                                CloudinaryService cloudinaryService,
                                UserService userService) {
     this.thingsToDoRepository = thingsToDoRepository;
@@ -127,9 +128,13 @@ public class ThingsToDoServiceImpl implements ThingsToDoService {
   }
 
   @Override
-  public void editThingToDo(String id, ThingsToDoEditServiceModel serviceModel, Principal principal) throws IOException {
+  public void editThingToDo(String id,
+                            ThingsToDoEditServiceModel serviceModel,
+                            Principal principal) throws IOException {
+
     ThingsToDo thingsToDo =
-      this.thingsToDoRepository.findById(id).orElseThrow(() -> new IllegalArgumentException(ID_NOT_FOUND));
+      this.thingsToDoRepository.findById(id)
+        .orElseThrow(() -> new IllegalArgumentException(ID_NOT_FOUND));
     User userByUsername = this.userService.findUserByUsername(principal.getName());
 
     for (MultipartFile image : serviceModel.getImages()) {
@@ -165,13 +170,14 @@ public class ThingsToDoServiceImpl implements ThingsToDoService {
   }
 
   @Override
-  public Set<ThingsToDoMainImageServiceModel> findNewestTakeFour() {
+  public List<ThingsToDoMainImageServiceModel> findNewestTakeFour() {
     return this.thingsToDoRepository.findAll()
       .stream()
       .sorted((t1, t2) -> t2.getDateAdded().compareTo(t1.getDateAdded()))
-      .map(t -> this.modelMapper.map(t, ThingsToDoMainImageServiceModel.class))
       .limit(4)
-      .collect(Collectors.toSet());
+      .map(t -> this.modelMapper
+        .map(t, ThingsToDoMainImageServiceModel.class))
+      .collect(Collectors.toList());
   }
 
   private Image mapImage(ThingsToDo thingsToDo, User userByUsername, MultipartFile image) throws IOException {

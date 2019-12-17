@@ -54,7 +54,7 @@ public class HomeController extends BaseController {
       .map(p -> this.modelMapper.map(p, ThingsToDoViewModel.class))
       .collect(Collectors.toList());
 
-    List<PostHomeViewModel> posts = this.postService.findNewestTakeFour()
+    List<PostHomeViewModel> posts = this.postService.findNewestTakeThree()
       .stream()
       .map(p -> this.modelMapper.map(p, PostHomeViewModel.class))
       .collect(Collectors.toList());

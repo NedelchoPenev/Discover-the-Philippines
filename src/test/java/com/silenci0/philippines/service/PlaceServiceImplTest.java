@@ -71,7 +71,6 @@ public class PlaceServiceImplTest {
     when(this.modelMapper.map(any(), any())).thenReturn(this.place);
     when(this.cloudinaryService.uploadImageGetFullResponse(any()))
       .thenReturn(response);
-    when(this.userService.findUserByUserName(any())).thenReturn(mock(UserServiceModel.class));
 
     PlaceServiceModel serviceModel = new PlaceServiceModel(){{
       setId("test_id");

@@ -63,16 +63,13 @@ public class UserServiceImpl implements UserService, ApplicationListener<Authent
       userServiceModel.setAuthorities(this.roleService.findAllRoles());
     } else {
       userServiceModel.setAuthorities(new LinkedHashSet<>());
-
       userServiceModel.getAuthorities().add(this.roleService.findByAuthority("ROLE_USER"));
     }
 
     User user = this.modelMapper.map(userServiceModel, User.class);
     user.setPassword(this.bCryptPasswordEncoder.encode(userServiceModel.getPassword()));
-    LocalDate registrationDate = LocalDate.now();
-    user.setRegistrationDate(registrationDate);
-    LocalDateTime lastDateLogin = LocalDateTime.now();
-    user.setLastDateLogin(lastDateLogin);
+    user.setRegistrationDate(LocalDate.now());
+    user.setLastDateLogin(LocalDateTime.now());
     user.setProfilePictureUrl(DEFAULT_PROFILE_PICTURE);
 
     return this.modelMapper.map(this.userRepository.saveAndFlush(user), UserServiceModel.class);
@@ -132,7 +129,9 @@ public class UserServiceImpl implements UserService, ApplicationListener<Authent
   }
 
   @Override
-  public Page<UsersPageServiceModel> findByUsernamePage(String username, String usernameNot, Pageable pageable) {
+  public Page<UsersPageServiceModel> findByUsernamePage(String username,
+                                                        String usernameNot,
+                                                        Pageable pageable) {
     return this.userRepository
       .findDistinctByUsernameStartingWithAndUsernameNot(username, usernameNot, pageable)
       .map(user -> this.modelMapper.map(user, UsersPageServiceModel.class));
@@ -158,7 +157,11 @@ public class UserServiceImpl implements UserService, ApplicationListener<Authent
     User user = this.userRepository.findById(id)
       .orElseThrow(() -> new IllegalArgumentException(INCORRECT_ID));
 
-    Set<String> userRoles = user.getAuthorities().stream().map(Role::getAuthority).collect(Collectors.toSet());
+    Set<String> userRoles = user.getAuthorities()
+      .stream()
+      .map(Role::getAuthority)
+      .collect(Collectors.toSet());
+
     if (userRoles.contains("ROLE_ROOT")) {
       throw new IllegalArgumentException("Cannot edit ROOT");
     }

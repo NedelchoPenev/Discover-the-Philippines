@@ -68,11 +68,11 @@ public class ThingsToDoServiceImpl implements ThingsToDoService {
   }
 
   @Override
-  public List<String> findAllProvinces() {
+  public Set<String> findAllProvinces() {
     return this.thingsToDoRepository.getAllProvinces()
       .stream()
       .sorted(Comparator.comparing(String::toString))
-      .collect(Collectors.toList());
+      .collect(Collectors.toCollection(LinkedHashSet::new));
   }
 
   @Override

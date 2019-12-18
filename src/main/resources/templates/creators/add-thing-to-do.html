@@ -1,20 +1,20 @@
 <th:block th:fragment>
   <div class="container">
-    <h2 class="mb-4 mt-4 text-center">Add a new Thing To Do!</h2>
+    <h2 class="mb-4 mt-4 text-center">Add a new Adventure!</h2>
     <form th:action="@{/creators/add-thing-to-do}" method="POST" th:object="${bindingModel}" enctype="multipart/form-data">
       <div class="mt-5 w-50 mx-auto">
-        <h3>Thing To Do</h3>
+        <h3>Adventure</h3>
         <input type="text" class="form-control" name="name"
                th:value="*{name}"
                th:classappend="${#fields.hasErrors('name')} ? 'is-invalid'"
-               placeholder="Enter Thing To Do Name..." required>
+               placeholder="Enter Adventure Name..." required>
         <th:block th:if="${#fields.hasErrors('name')}">
           <small class="text-danger" th:errors="*{name}"></small>
         </th:block>
       </div>
       <div class="mt-5 w-50 mx-auto">
         <h3>
-          Thing To Do Images
+          Adventure Images
         </h3>
         <div class="custom-file">
           <input type="file" class="custom-file-input" id="validatedCustomFile" name="images"
@@ -38,7 +38,7 @@
         <textarea name="overview" class="form-control" cols="41" rows="5"
                   th:text="*{overview}"
                   th:classappend="${#fields.hasErrors('overview')} ? 'is-invalid'"
-                  placeholder="Write Overview for Thing To Do..." required></textarea>
+                  placeholder="Write Overview for Adventure..." required></textarea>
         <th:block th:if="${#fields.hasErrors('overview')}">
           <small class="text-danger" th:errors="*{overview}"></small>
         </th:block>

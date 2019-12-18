@@ -128,9 +128,9 @@ public class ThingsToDoServiceImplTest {
 
     when(this.thingsToDoRepository.getAllProvinces()).thenReturn(provinces);
 
-    List<String> actual = this.thingsToDoService.findAllProvinces();
+    Set<String> actual = this.thingsToDoService.findAllProvinces();
 
-    Assert.assertEquals("aaa", actual.get(0));
+    Assert.assertEquals("aaa", actual.stream().findFirst().get());
     Assert.assertEquals(provinces.size(), actual.size());
   }
 

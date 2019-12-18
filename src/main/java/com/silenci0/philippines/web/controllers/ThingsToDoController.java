@@ -70,8 +70,10 @@ public class ThingsToDoController extends BaseController {
                                             RegisterUserBindingModel bindingModel,
                                           ModelAndView modelAndView,
                                           @PathVariable String id) {
-    ThingsToDoServiceModel serviceModel = this.thingsToDoService.findById(id);
-    ThingsToDoDetailsViewModel thingToDo = this.modelMapper.map(serviceModel, ThingsToDoDetailsViewModel.class);
+    ThingsToDoServiceModel serviceModel =
+      this.thingsToDoService.findById(id);
+    ThingsToDoDetailsViewModel thingToDo =
+      this.modelMapper.map(serviceModel, ThingsToDoDetailsViewModel.class);
 
     return view("things-todo/thing-todo-details", "thingToDo", thingToDo, modelAndView);
   }
